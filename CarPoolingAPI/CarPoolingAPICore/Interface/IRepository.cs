@@ -1,10 +1,10 @@
 ﻿namespace CarPoolingAPICore.Interface;
 
-public interface IRepository<T>
+public interface IRepository<in TId, T>
 {
     Task<IEnumerable<T>> GetAll();
-    Task<T> GetById(int id);
+    Task<T> GetById(TId id);
     Task<T> Add(T entity);
     Task<T> Update(T entity);
-    Task<T> Delete(int id);
+    Task<T> Delete(TId id);
 }
