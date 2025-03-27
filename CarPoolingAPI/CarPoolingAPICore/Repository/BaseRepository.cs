@@ -4,9 +4,11 @@ namespace CarPoolingAPICore.Repository;
 
 public class BaseRepository<T> : IRepository<T>
 {
+    private List<T> _entities;
+    
     public BaseRepository()
     {
-        throw new NotImplementedException();
+        _entities = new List<T>();
     }
     
     public Task<IEnumerable<T>> GetAll()
