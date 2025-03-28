@@ -16,7 +16,7 @@ public class RepositoryTests_Delete
 
         Assert.DoesNotThrowAsync(async () => { await userRepository.Delete(id); });
     }
-    
+
     [Test]
     [TestCase(1)]
     [TestCase(2)]
@@ -24,19 +24,24 @@ public class RepositoryTests_Delete
     {
         IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([new UserTestData { Id = id, Name = "Test" }]);
 
-        Assert.ThrowsAsync<RepoDataNotFoundException>(async () => { await userRepository.Delete(id + 1); });//Add one to fail delete
+        Assert.ThrowsAsync<RepoDataNotFoundException>(async () => { await userRepository.Delete(id + 1); }); //Add one to fail delete
     }
 
     [Test]
     [TestCase(1)]
     [TestCase(2)]
-    public static void DeleteHasBeenDeleted(int id)
+    [TestCase(5)]
+    [TestCase(98)]
+    public static async Task DeleteHasBeenDeleted(int id)
     {
         UserTestData user = new UserTestData { Id = id, Name = "Test" };
         IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([user]);
 
-        userRepository.Delete(id + 1).GetAwaiter();
+        await userRepository.Delete(id);
 
-        Assert.ThrowsAsync<RepoDataNotFoundException>(async () => { await userRepository.GetById(id); });
+        Assert.ThrowsAsync<RepoDataNotFoundException>(async () =>
+        {
+            await userRepository.GetById(id);
+        });
     }
 }

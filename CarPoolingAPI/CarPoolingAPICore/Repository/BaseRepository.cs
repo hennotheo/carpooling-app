@@ -40,8 +40,10 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
         throw new NotImplementedException();
     }
 
-    public Task Delete(TId id)
+    public async Task Delete(TId id)
     {
-        throw new NotImplementedException();
+        T entity = await GetById(id);
+        
+        await Task.Run(() => Entities.Remove(entity));
     }
 }
