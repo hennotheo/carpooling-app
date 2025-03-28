@@ -20,7 +20,7 @@ public class UserController : ControllerBase
     [HttpGet(Name = "GetUsers")]
     public IActionResult Get()
     {
-        ICollection<CarPoolingAPICore.Models.UserController>? allUsers = _userService.GetAllUsers();
+        ICollection<CarPoolingAPICore.Models.User>? allUsers = _userService.GetAllUsers();
         if (allUsers != null)
             return Ok(allUsers);
 

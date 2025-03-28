@@ -60,4 +60,12 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
 
         await Task.Run(() => Entities.Remove(entity));
     }
+
+    public void Dispose()
+    {
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+    }
 }

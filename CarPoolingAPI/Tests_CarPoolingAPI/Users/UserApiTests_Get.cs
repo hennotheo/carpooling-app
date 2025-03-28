@@ -11,15 +11,15 @@ using Moq;
 namespace Tests_CarPoolingAPI;
 
 [TestFixture(Category = "Get")]
-public class ApiTests
+public class UserApiTests_Get
 {
     private HttpClient _client;
     private Mock<IUserService> _mockUserService;
 
-    private List<UserController> _data = new List<UserController>
+    private List<User> _data = new List<User>
     {
-        new UserController { Id = 1, Name = "John" },
-        new UserController { Id = 2, Name = "Jane" }
+        new User { Id = 1, Name = "John" },
+        new User { Id = 2, Name = "Jane" }
     };
 
     [SetUp]
@@ -41,7 +41,7 @@ public class ApiTests
     {
         _mockUserService.Setup(service => service.GetAllUsers()).Returns(_data);
 
-        HttpResponseMessage response = await _client.GetAsync("/User");
+        HttpResponseMessage response = await _client.GetAsync(CarPoolingAPITests.USER_ROOT);
 
         Assert.That(response.IsSuccessStatusCode, Is.True);
         var responseString = await response.Content.ReadAsStringAsync();
@@ -52,11 +52,11 @@ public class ApiTests
     public async Task GetUsers_ReturnListOfUsers()
     {
         _mockUserService.Setup(service => service.GetAllUsers()).Returns(_data);
-        
-        HttpResponseMessage response = await _client.GetAsync("/User");
+
+        HttpResponseMessage response = await _client.GetAsync(CarPoolingAPITests.USER_ROOT);
 
         var responseString = await response.Content.ReadAsStringAsync();
-        var users = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserController>>(responseString);
+        var users = Newtonsoft.Json.JsonConvert.DeserializeObject<List<User>>(responseString);
         Assert.That(users, Is.Not.Null);
     }
 }

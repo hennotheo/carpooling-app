@@ -2,7 +2,7 @@ using CarPoolingAPICore.Models;
 
 namespace CarPoolingAPI.Services;
 
-public interface IUserService
+public interface IUserService : IDisposable, IAsyncDisposable
 {
-    IList<UserController>? GetAllUsers();
+    IList<User>? GetAllUsers();
 }

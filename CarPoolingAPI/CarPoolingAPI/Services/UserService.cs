@@ -6,14 +6,14 @@ namespace CarPoolingAPI.Services;
 
 public class UserService : IUserService
 {
-    private IRepository<int, UserController> _userRepository;
+    private IRepository<int, User> _userRepository;
 
-    private class FakeRepo : BaseRepository<int, UserController>
+    private class FakeRepo : BaseRepository<int, User>
     {
         public FakeRepo() : base()
         {
-            Entities.Add(new UserController { Id = 1, Name = "John" });
-            Entities.Add(new UserController { Id = 2, Name = "Jane" });
+            Entities.Add(new User { Id = 1, Name = "John" });
+            Entities.Add(new User { Id = 2, Name = "Jane" });
         }
     }
     
@@ -22,8 +22,18 @@ public class UserService : IUserService
         _userRepository = new FakeRepo();
     }
     
-    public IList<UserController>? GetAllUsers()
+    public IList<User>? GetAllUsers()
     {
         return _userRepository.GetAll().Result;
+    }
+
+    public void Dispose()
+    {
+        _userRepository.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _userRepository.DisposeAsync();
     }
 }

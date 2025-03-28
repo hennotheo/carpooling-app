@@ -1,6 +1,6 @@
 ﻿namespace CarPoolingAPICore.Interface;
 
-public interface IRepository<in TId, T>
+public interface IRepository<in TId, T> : IDisposable, IAsyncDisposable
 {
     Task<IList<T>> GetAll();
     Task<T> GetById(TId id);

@@ -1,6 +1,6 @@
 ﻿namespace CarPoolingAPICore.Models;
 
-public class UserController
+public class User
 {
     public int Id { get; set; }
     public string Name { get; set; }
