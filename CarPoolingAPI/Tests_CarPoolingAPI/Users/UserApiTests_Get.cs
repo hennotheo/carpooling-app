@@ -1,9 +1,4 @@
-﻿using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using Microsoft.AspNetCore.Mvc.Testing;
-using CarPoolingAPI;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using CarPoolingAPI.Services;
 using CarPoolingAPICore.Models;
 using Moq;
@@ -37,26 +32,34 @@ public class UserApiTests_Get
     }
 
     [Test]
-    public async Task GetUsers_ReturnSuccess()
+    public async Task GetUsersById_Exist()
     {
-        _mockUserService.Setup(service => service.GetAllUsers()).Returns(_data);
+        _mockUserService.Setup(service => service.GetUserById(0)).Returns(new User() { Id = 0, Name = "John" });
 
-        HttpResponseMessage response = await _client.GetAsync(CarPoolingAPITests.USER_ROOT);
+        HttpResponseMessage response = await _client.GetAsync($"/User/0");
 
         Assert.That(response.IsSuccessStatusCode, Is.True);
-        var responseString = await response.Content.ReadAsStringAsync();
-        Assert.That(responseString, Is.Not.Null);
     }
 
     [Test]
     public async Task GetUsers_ReturnListOfUsers()
     {
-        _mockUserService.Setup(service => service.GetAllUsers()).Returns(_data);
+        _mockUserService.Setup(service => service.SearchUsers(10)).Returns(_data);
 
         HttpResponseMessage response = await _client.GetAsync(CarPoolingAPITests.USER_ROOT);
 
         var responseString = await response.Content.ReadAsStringAsync();
         var users = Newtonsoft.Json.JsonConvert.DeserializeObject<List<User>>(responseString);
         Assert.That(users, Is.Not.Null);
+    }
+
+    [Test]
+    public async Task GetUser_ReturnNotNotFound()
+    {
+        _mockUserService.Setup(service => service.SearchUsers(10)).Returns(_data);
+
+        HttpResponseMessage response = await _client.GetAsync(CarPoolingAPITests.USER_ROOT);
+
+        Assert.That(response.IsSuccessStatusCode, Is.True);
     }
 }

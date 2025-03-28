@@ -22,9 +22,14 @@ public class UserService : IUserService
         _userRepository = new FakeRepo();
     }
     
-    public IList<User>? GetAllUsers()
+    public IList<User>? SearchUsers(int maxCount)
     {
-        return _userRepository.GetAll().Result;
+        return _userRepository.GetAll(maxCount).Result;
+    }
+
+    public User? GetUserById(int userId)
+    {
+        throw new NotImplementedException();
     }
 
     public void Dispose()

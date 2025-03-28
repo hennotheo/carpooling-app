@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using CarPoolingAPI.Services;
 using CarPoolingAPICore.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,10 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Name = "GetUsers")]
-    public IActionResult Get()
+    public IActionResult Search([FromQuery, Range(1, 100)] int max = 25)
     {
-        ICollection<CarPoolingAPICore.Models.User>? allUsers = _userService.GetAllUsers();
-        if (allUsers != null)
+        ICollection<User> allUsers = _userService.SearchUsers(max);
+        if (allUsers != null && allUsers.Count > 0)
             return Ok(allUsers);
 
         return NotFound();
