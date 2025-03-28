@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using CarPoolingAPI.Services;
 
 [assembly: InternalsVisibleTo("Tests_CarPoolingAPI")]
 
@@ -11,6 +12,8 @@ builder.Services.AddControllers();
 // builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
