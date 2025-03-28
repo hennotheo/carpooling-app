@@ -7,7 +7,7 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
 {
     private List<T> _entities;//TODO: Change the variable
     
-    protected virtual IEnumerable<T> Entities => _entities;
+    protected virtual IList<T> Entities => _entities;
 
     public BaseRepository()
     {
@@ -30,9 +30,9 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
         return value;
     }
 
-    public Task Add(T entity)
+    public async Task Add(T entity)
     {
-        throw new NotImplementedException();
+        await Task.Run(() => Entities.Add(entity));
     }
 
     public Task Update(T entity)

@@ -10,7 +10,7 @@ public class RepositoryTests_GetById
     [Test]
     [TestCase(1, false)]
     [TestCase(2, true)]
-    public void GetUsersByIdThrow(int id, bool mustThrow)
+    public static void GetUsersByIdThrow(int id, bool mustThrow)
     {
         IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([new UserTestData { Id = 1, Name = "Test" }]);
 
@@ -31,7 +31,7 @@ public class RepositoryTests_GetById
     }
     
     [Test]
-    public void GetUsersByIdValid()
+    public static void GetUsersByIdValid()
     {
         UserTestData user = new UserTestData { Id = 1, Name = "Test" };
         IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([user]);
