@@ -1,6 +1,6 @@
 ﻿namespace CarPoolingAPICore.Exceptions;
 
-public class CarpoolingAPICoreException : Exception
+public abstract class CarpoolingAPICoreException : Exception
 {
     
 }
