@@ -1,3 +1,7 @@
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Tests_CarPoolingAPI")]
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
