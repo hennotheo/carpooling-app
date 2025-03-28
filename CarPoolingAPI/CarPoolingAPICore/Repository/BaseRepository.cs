@@ -41,9 +41,14 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
         await Task.Run(() => Entities.Add(entity));
     }
 
-    public Task Update(T entity)
+    public async Task Update(T entity)
     {
-        throw new NotImplementedException();
+        TId id = (TId)_idProp.GetValue(entity);
+
+        await Delete(id);
+        await Add(entity);
+        
+        Console.WriteLine("Warning: Entity with the same ID is being updated.");
     }
 
     public async Task Delete(TId id)
