@@ -19,7 +19,7 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
         return await Task.Run(() => Entities.AsEnumerable());
     }
 
-    public async Task<T?> GetById(TId id)
+    public async Task<T> GetById(TId id)
     {
         T? value = await Task.Run(() => Entities
             .FirstOrDefault(e => e.GetType().GetProperty("Id").GetValue(e).Equals(id)));
@@ -30,17 +30,17 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
         return value;
     }
 
-    public void Add(T entity)
+    public Task Add(T entity)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(T entity)
+    public Task Update(T entity)
     {
         throw new NotImplementedException();
     }
 
-    public void Delete(TId id)
+    public Task Delete(TId id)
     {
         throw new NotImplementedException();
     }
