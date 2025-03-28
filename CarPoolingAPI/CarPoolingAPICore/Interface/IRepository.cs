@@ -2,9 +2,13 @@
 
 public interface IRepository<in TId, T>
 {
-    Task<IEnumerable<T>> GetAll();
+    Task<IList<T>> GetAll();
     Task<T> GetById(TId id);
+    Task<T> GetFirstByPredicate(Func<T, bool> predicate);
+    
     Task Add(T entity);
+    
     Task Update(T entity);
-    Task Delete(TId id);
+    
+    Task DeleteById(TId id);
 }

@@ -20,15 +20,20 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
         _idProp = typeof(T).GetProperty("Id")!;
     }
 
-    public async Task<IEnumerable<T>> GetAll()
+    public async Task<IList<T>> GetAll()
     {
-        return await Task.Run(() => Entities.AsEnumerable());
+        return await Task.Run(() => Entities);
     }
 
     public async Task<T> GetById(TId id)
     {
+        return await GetFirstByPredicate(entity => _idProp.PropertyEquals(entity, id));
+    }
+    
+    public async Task<T> GetFirstByPredicate(Func<T, bool> predicate)
+    {
         T? value = await Task.Run(() => Entities
-            .FirstOrDefault(entity => _idProp.PropertyEquals(entity, id)));
+            .FirstOrDefault(predicate));
 
         if (Equals(value, default(T)))
             throw new RepoDataNotFoundException();
@@ -43,15 +48,13 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
 
     public async Task Update(T entity)
     {
-        TId id = (TId)_idProp.GetValue(entity);
+        TId id = (TId)_idProp.GetValue(entity);//TODO Change when implementing EFCore
 
-        await Delete(id);
+        await DeleteById(id);
         await Add(entity);
-        
-        Console.WriteLine("Warning: Entity with the same ID is being updated.");
     }
 
-    public async Task Delete(TId id)
+    public async Task DeleteById(TId id)
     {
         T entity = await GetById(id);
 
