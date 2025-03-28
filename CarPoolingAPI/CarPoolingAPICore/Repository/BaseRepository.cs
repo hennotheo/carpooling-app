@@ -25,7 +25,7 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
             .FirstOrDefault(e => e.GetType().GetProperty("Id").GetValue(e).Equals(id)));
 
         if (object.Equals(value, default(T)))
-            throw new UserNotFoundException();
+            throw new RepoDataNotFoundException();
 
         return value;
     }

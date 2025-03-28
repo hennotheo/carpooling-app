@@ -16,7 +16,7 @@ public class RepositoryTests_GetById
 
         if (mustThrow)
         {
-            Assert.ThrowsAsync<UserNotFoundException>(async () =>
+            Assert.ThrowsAsync<RepoDataNotFoundException>(async () =>
             {
                 var user = await userRepository.GetById(id);
             });
@@ -29,15 +29,15 @@ public class RepositoryTests_GetById
             });
         }
     }
-    
+
     [Test]
     public static void GetUsersByIdValid()
     {
         UserTestData user = new UserTestData { Id = 1, Name = "Test" };
         IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([user]);
-        
+
         UserTestData get = userRepository.GetById(user.Id).GetAwaiter().GetResult();
-        
+
         Assert.That(get.Name, Is.EqualTo(user.Name));
     }
 }
