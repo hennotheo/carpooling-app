@@ -1,8 +1,8 @@
 ﻿namespace CarPoolingAPICore.Interface;
 
-public interface IRepository<in TId, T>
+public interface IRepository<in TId, T> : IDisposable, IAsyncDisposable
 {
-    Task<IList<T>> GetAll();
+    Task<IList<T>> GetAll(int maxCount = int.MaxValue);
     Task<T> GetById(TId id);
     Task<T> GetFirstByPredicate(Func<T, bool> predicate);
     
