@@ -20,7 +20,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet(Name = "GetUsers")]
+    [HttpGet("Search", Name = "GetUsers")]
     public IActionResult Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
         ICollection<User> allUsers = _userService.SearchUsers(max);
