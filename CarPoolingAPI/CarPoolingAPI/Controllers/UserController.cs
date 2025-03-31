@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 using CarPoolingAPI.Services;
+using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +21,31 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Name = "GetUsers")]
-    public IActionResult Search([FromQuery, Range(1, 100)] int max = 25)
+    public IActionResult Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
         ICollection<User> allUsers = _userService.SearchUsers(max);
-        if (allUsers != null && allUsers.Count > 0)
+
+        if (allUsers.Count > 0)
             return Ok(allUsers);
 
         return NotFound();
+    }
+
+    [HttpGet("{userId}", Name = "GetUser")]
+    public IActionResult GetUserById([FromRoute, Range(0, int.MaxValue)] int userId)
+    {
+        try
+        {
+            User user = _userService.GetUserById(userId);
+            return Ok(user);
+        }
+        catch (RepoDataNotFoundException e)
+        {
+            return NotFound();
+        }
+        catch (Exception e)
+        {
+            return BadRequest();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CarPoolingAPICore.Interface;
+﻿using CarPoolingAPICore.Exceptions;
+using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
 using CarPoolingAPICore.Repository;
 
@@ -16,20 +17,20 @@ public class UserService : IUserService
             Entities.Add(new User { Id = 2, Name = "Jane" });
         }
     }
-    
+
     public UserService()
     {
         _userRepository = new FakeRepo();
     }
-    
-    public IList<User>? SearchUsers(int maxCount)
+
+    public IList<User> SearchUsers(int maxCount)
     {
         return _userRepository.GetAll(maxCount).Result;
     }
 
-    public User? GetUserById(int userId)
+    public User GetUserById(int userId)
     {
-        throw new NotImplementedException();
+        return _userRepository.GetById(userId).Result;
     }
 
     public void Dispose()
