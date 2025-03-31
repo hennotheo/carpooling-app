@@ -1,35 +1,12 @@
-using CarPoolingAPI.Services;
-using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
+using CarPoolingAPICore.Repository;
 using Moq;
 
 namespace Tests_CarPoolingAPI;
 
 [TestFixture(Category = "Get")]
-public class UserServiceTests_Get
+public class UserServiceTests_Get : UserServiceTests
 {
-    private UserService _service;
-    private Mock<IRepository<int, User>> _mockUserRepo;
-
-    private List<User> _data = new List<User>
-    {
-        new User { Id = 1, Name = "John" },
-        new User { Id = 2, Name = "Jane" }
-    };
-
-    [SetUp]
-    public void Setup()
-    {
-        _mockUserRepo = new Mock<IRepository<int, User>>();
-        _service = new UserService();
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        _service.Dispose();
-    }
-
     [Test]
     public void GetAllUsers_NoThrow()
     {
@@ -46,7 +23,7 @@ public class UserServiceTests_Get
         var result = _service.SearchUsers(10);
         Assert.That(result, Is.Not.Null);
     }
-    
+
     [Test]
     [TestCase(1)]
     [TestCase(2)]

@@ -30,7 +30,17 @@ public class UserService : IUserService
 
     public User GetUserById(int userId)
     {
-        return _userRepository.GetById(userId).Result;
+        return _userRepository.GetById(userId).GetAwaiter().GetResult();
+    }
+
+    public User AddUser(User user)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteUser(int userId)
+    {
+        throw new NotImplementedException();
     }
 
     public void Dispose()
