@@ -1,4 +1,5 @@
-﻿using CarPoolingAPI.Exceptions;
+﻿using System.Text.Json.Serialization;
+using CarPoolingAPI.Exceptions;
 using CarPoolingAPICore.Exceptions;
 using Moq;
 
@@ -15,7 +16,7 @@ public class UserApiTests_Delete : UserApiTests
 
         Assert.That(response.IsSuccessStatusCode, Is.True);
     }
-    
+
     [Test]
     public async Task DeleteUser_NotFoundWhenUserDoesntExist()
     {
@@ -24,7 +25,7 @@ public class UserApiTests_Delete : UserApiTests
 
         Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.NotFound));
     }
-    
+
     [Test]
     public async Task DeleteUser_Succeed()
     {
