@@ -1,4 +1,6 @@
-﻿namespace CarPoolingAPI.DTO;
+﻿using CarPoolingAPICore.Models;
+
+namespace CarPoolingAPI.DTO;
 
 public struct UserProfileDto
 {
@@ -7,4 +9,13 @@ public struct UserProfileDto
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
+
+    public static UserProfileDto MapFromUser(User user)
+    {
+        return new UserProfileDto()
+        {
+            Id = user.Id,
+            FirstName = user.Name
+        };
+    }
 }

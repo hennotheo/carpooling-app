@@ -34,11 +34,7 @@ public class UserService : IUserService
     {
         User rawData = await _userRepository.GetById(userId);
         
-        return new UserProfileDto
-        {
-            Id = rawData.Id,
-            FirstName = rawData.Name
-        };
+        return UserProfileDto.MapFromUser(rawData);
     }
 
     public async Task<UserProfileDto> AddUser(User user)
@@ -50,11 +46,7 @@ public class UserService : IUserService
             throw new BadRequestServiceException("Name cannot be null.");
         
         User rawData = await _userRepository.Add(user);
-        return new UserProfileDto()
-        {
-            Id = rawData.Id,
-            FirstName = rawData.Name
-        };
+        return UserProfileDto.MapFromUser(rawData);
     }
 
     public async Task DeleteUser(int userId)
