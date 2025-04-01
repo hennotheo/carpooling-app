@@ -41,17 +41,20 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
         return value!;
     }
 
-    public async Task Add(T entity)
+    public async Task<T> Add(T entity)
     {
-        await Task.Run(() => Entities.Add(entity));
+        Entities.Add(entity);
+        
+        return await Task.FromResult(entity);
     }
 
-    public async Task Update(T entity)
+    public async Task<T> Update(T entity)
     {
         TId id = (TId)_idProp.GetValue(entity); //TODO Change when implementing EFCore
 
         await DeleteById(id);
-        await Add(entity);
+        
+        return await Add(entity);
     }
 
     public async Task DeleteById(TId id)

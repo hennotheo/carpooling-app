@@ -13,10 +13,11 @@ public class UserApiTests_Post : UserApiTests
     public async Task AddUser_Exist()
     {
         User user = new User() { Id = 0, Name = "John" };
-        _mockUserService.Setup(service => service.AddUser(new User())).Callback(() => Task.Delay(1));
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).ReturnsAsync(user);
 
         HttpResponseMessage response = await AddUserPost(user);
 
+        Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));
         Assert.That(response.IsSuccessStatusCode, Is.True);
     }
 

@@ -4,6 +4,7 @@ using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
 using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPoolingAPI.Controllers;
@@ -22,9 +23,9 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("Search", Name = "SearchUsers")]
-    public IActionResult Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
+    public async Task<IActionResult> Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
-        ICollection<User> allUsers = _userService.SearchUsers(max).Result;
+        ICollection<User> allUsers = await _userService.SearchUsers(max);
 
         if (allUsers.Count > 0)
             return Ok(allUsers);
@@ -32,45 +33,54 @@ public class UserController : ControllerBase
         return NotFound();
     }
 
-    [HttpGet("{userId}", Name = "GetUser")]
-    public IActionResult GetUserById([FromRoute, Range(0, int.MaxValue)] int userId)
+    [HttpGet("{userId}", Name = nameof(GetUserById))]
+    public async Task<IActionResult> GetUserById([FromRoute, Range(0, int.MaxValue)] int userId)
     {
-        return ExecuteServiceAction(() =>
+        return await ExecuteServiceAction(async () =>
         {
-            User user = _userService.GetUserById(userId).Result;
+            User user = await _userService.GetUserById(userId);
             return Ok(user);
         });
     }
 
     [HttpDelete("{userId}", Name = "DeleteUser")]
-    public IActionResult DeleteUserById([FromRoute, Range(0, int.MaxValue)] int userId)
+    public async Task<IActionResult> DeleteUserById([FromRoute, Range(0, int.MaxValue)] int userId)
     {
-        return ExecuteServiceAction(() =>
+        return await ExecuteServiceAction(async () =>
         {
-            _userService.DeleteUser(userId).Wait();
+            await _userService.DeleteUser(userId);
             return Ok("User deleted successfully");
         });
     }
-    
-    private IActionResult ExecuteServiceAction(Func<IActionResult>? action)
+
+    [HttpPost(Name = "AddUser")]
+    public async Task<IActionResult> AddUser([FromBody] User user)
+    {
+        return await ExecuteServiceAction(async () =>
+        {
+            User createdUser = await _userService.AddUser(user);
+            return CreatedAtRoute("GetUserById", new { userId = createdUser.Id }, createdUser);
+        });
+    }
+
+    private async Task<IActionResult> ExecuteServiceAction(Func<Task<IActionResult>>? action)
     {
         if (action == null)
             return BadRequest("Action is null");
-        
+
         try
         {
-            return action();
+            return await action();
         }
-        catch (AggregateException e)
+        catch (ServiceException e)
         {
-            _logger.LogError(e.Message);
-            
-            if (e.InnerException is ServiceException)
-            {
-                return (e.InnerException! as ServiceException)!.ErrorAction();
-            }
-
-            return BadRequest();
+            _logger.LogError(e.StackTrace);
+            return e.ErrorAction();
+        }
+        catch(Exception e)
+        {
+            _logger.LogError(e.StackTrace);
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }

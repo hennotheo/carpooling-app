@@ -36,7 +36,13 @@ public class UserService : IUserService
 
     public async Task<User> AddUser(User user)
     {
-        throw new NotImplementedException();
+        if(await UserAlreadyExists(user))
+            throw new AlreadyExistsServiceException($"User with name {user.Name} already exists.");
+        
+        if(string.IsNullOrEmpty(user.Name))
+            throw new BadRequestServiceException("Name cannot be null.");
+            
+        return await _userRepository.Add(user);
     }
 
     public async Task DeleteUser(int userId)
@@ -59,5 +65,18 @@ public class UserService : IUserService
     public async ValueTask DisposeAsync()
     {
         await _userRepository.DisposeAsync();
+    }
+    
+    private async Task<bool> UserAlreadyExists(User user)
+    {
+        try
+        {
+            await _userRepository.GetFirstByPredicate(u => u.Name == user.Name);//TODO: Change to email
+            return true;
+        }
+        catch (RepoDataNotFoundException)
+        {
+            return false;
+        }
     }
 }
