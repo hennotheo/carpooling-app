@@ -1,4 +1,5 @@
-﻿using CarPoolingAPI.Exceptions;
+﻿using CarPoolingAPI.DTO;
+using CarPoolingAPI.Exceptions;
 using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
@@ -29,12 +30,13 @@ public class UserService : IUserService
         return await _userRepository.GetAll(maxCount);
     }
 
-    public async Task<User> GetUserById(int userId)
+    public async Task<UserProfileDto> GetUserById(int userId)
     {
-        return await _userRepository.GetById(userId);
+        throw new NotImplementedException();
+        // return await _userRepository.GetById(userId);
     }
 
-    public async Task<User> AddUser(User user)
+    public async Task<UserProfileDto> AddUser(User user)
     {
         if(await UserAlreadyExists(user))
             throw new AlreadyExistsServiceException($"User with name {user.Name} already exists.");
@@ -42,7 +44,8 @@ public class UserService : IUserService
         if(string.IsNullOrEmpty(user.Name))
             throw new BadRequestServiceException("Name cannot be null.");
             
-        return await _userRepository.Add(user);
+        throw new NotImplementedException();
+        // return await _userRepository.Add(user);
     }
 
     public async Task DeleteUser(int userId)

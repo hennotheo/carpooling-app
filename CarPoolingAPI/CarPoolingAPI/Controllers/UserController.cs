@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
+using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
 using CarPoolingAPICore.Exceptions;
@@ -38,7 +39,7 @@ public class UserController : ControllerBase
     {
         return await ExecuteServiceAction(async () =>
         {
-            User user = await _userService.GetUserById(userId);
+            UserProfileDto user = await _userService.GetUserById(userId);
             return Ok(user);
         });
     }
@@ -58,7 +59,7 @@ public class UserController : ControllerBase
     {
         return await ExecuteServiceAction(async () =>
         {
-            User createdUser = await _userService.AddUser(user);
+            UserProfileDto createdUser = await _userService.AddUser(user);
             return CreatedAtRoute("GetUserById", new { userId = createdUser.Id }, createdUser);
         });
     }

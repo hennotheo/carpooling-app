@@ -9,14 +9,12 @@ namespace Tests_CarPoolingAPI;
 [TestFixture(Category = "Post")]
 public class UserServiceTests_Post : UserServiceTests
 {
-    private readonly User _validUser = new() { Name = "John" };
-    
     [Test]
     public void AddUser_NoThrow()
     {
         SetupUserMockingDoesntExist();
 
-        Assert.DoesNotThrowAsync(() => _service.AddUser(_validUser));
+        Assert.DoesNotThrowAsync(() => _service.AddUser(TestData.ValidUser));
     }
 
     [Test]
@@ -26,7 +24,7 @@ public class UserServiceTests_Post : UserServiceTests
         _mockUserRepo.Setup(repo => repo.Add(It.IsAny<User>())).Verifiable();
         _mockUserRepo.CallBase = false;
 
-        await _service.AddUser(_validUser);
+        await _service.AddUser(TestData.ValidUser);
 
         _mockUserRepo.Verify(repo => repo.Add(It.IsAny<User>()), Times.Once);
         Assert.Pass();
@@ -35,9 +33,9 @@ public class UserServiceTests_Post : UserServiceTests
     [Test]
     public void AddUser_ThrowWhenAlreadyExists()
     {
-        _mockUserRepo.Setup(repo => repo.GetFirstByPredicate(It.IsAny<Func<User, bool>>())).ReturnsAsync(_validUser);//Find it in data
+        _mockUserRepo.Setup(repo => repo.GetFirstByPredicate(It.IsAny<Func<User, bool>>())).ReturnsAsync(TestData.ValidUser);//Find it in data
 
-        Assert.ThrowsAsync<AlreadyExistsServiceException>(async () => await _service.AddUser(_validUser));
+        Assert.ThrowsAsync<AlreadyExistsServiceException>(async () => await _service.AddUser(TestData.ValidUser));
     }
 
     [Test]

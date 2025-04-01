@@ -1,3 +1,4 @@
+using CarPoolingAPI.DTO;
 using CarPoolingAPICore.Models;
 using CarPoolingAPICore.Repository;
 using Moq;
@@ -31,7 +32,7 @@ public class UserServiceTests_Get : UserServiceTests
     {
         _mockUserRepo.Setup(repo => repo.GetById(id)).ReturnsAsync(new User() { Id = id, Name = "John" });
 
-        User user = await _service.GetUserById(id);
-        Assert.That(user, Is.Not.Null);
+        UserProfileDto user = await _service.GetUserById(id);
+        Assert.That(user, Is.Not.Default);
     }
 }
