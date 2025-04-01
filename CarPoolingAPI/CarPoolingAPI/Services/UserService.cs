@@ -32,8 +32,13 @@ public class UserService : IUserService
 
     public async Task<UserProfileDto> GetUserById(int userId)
     {
-        throw new NotImplementedException();
-        // return await _userRepository.GetById(userId);
+        User rawData = await _userRepository.GetById(userId);
+        
+        return new UserProfileDto
+        {
+            Id = rawData.Id,
+            FirstName = rawData.Name
+        };
     }
 
     public async Task<UserProfileDto> AddUser(User user)
@@ -43,9 +48,13 @@ public class UserService : IUserService
         
         if(string.IsNullOrEmpty(user.Name))
             throw new BadRequestServiceException("Name cannot be null.");
-            
-        throw new NotImplementedException();
-        // return await _userRepository.Add(user);
+        
+        User rawData = await _userRepository.Add(user);
+        return new UserProfileDto()
+        {
+            Id = rawData.Id,
+            FirstName = rawData.Name
+        };
     }
 
     public async Task DeleteUser(int userId)

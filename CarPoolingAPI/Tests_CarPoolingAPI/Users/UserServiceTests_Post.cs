@@ -13,6 +13,7 @@ public class UserServiceTests_Post : UserServiceTests
     public void AddUser_NoThrow()
     {
         SetupUserMockingDoesntExist();
+        _mockUserRepo.Setup(repo => repo.Add(It.IsAny<User>())).ReturnsAsync(TestData.ValidUser);
 
         Assert.DoesNotThrowAsync(() => _service.AddUser(TestData.ValidUser));
     }
@@ -21,7 +22,7 @@ public class UserServiceTests_Post : UserServiceTests
     public async Task AddUser_AddSucceed()
     {
         SetupUserMockingDoesntExist();
-        _mockUserRepo.Setup(repo => repo.Add(It.IsAny<User>())).Verifiable();
+        _mockUserRepo.Setup(repo => repo.Add(It.IsAny<User>())).ReturnsAsync(TestData.ValidUser);
         _mockUserRepo.CallBase = false;
 
         await _service.AddUser(TestData.ValidUser);
