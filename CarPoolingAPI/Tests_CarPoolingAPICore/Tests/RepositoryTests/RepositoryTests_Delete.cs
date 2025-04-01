@@ -20,7 +20,7 @@ public class RepositoryTests_Delete
     [Test]
     [TestCase(1)]
     [TestCase(2)]
-    public static void DeleteThrow(int id)
+    public static void DeleteThrowWhenNotExist(int id)
     {
         IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([new UserTestData { Id = id, Name = "Test" }]);
 
