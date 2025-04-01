@@ -18,7 +18,7 @@ public abstract class UserApiTests
     };
 
     [SetUp]
-    public void Setup()
+    public virtual void Setup()
     {
         _mockUserService = new Mock<IUserService>();
         var factory = new WebApplicationFactory<Program>()
@@ -27,7 +27,7 @@ public abstract class UserApiTests
     }
 
     [TearDown]
-    public void TearDown()
+    public virtual void TearDown()
     {
         _client.Dispose();
     }

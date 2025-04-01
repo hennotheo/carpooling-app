@@ -1,6 +1,10 @@
-﻿using CarPoolingAPICore.Exceptions;
+﻿using CarPoolingAPI.Exceptions;
+using CarPoolingAPI.Services;
+using CarPoolingAPICore.Exceptions;
+using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
 using CarPoolingAPICore.Repository;
+using Moq;
 
 namespace Tests_CarPoolingAPI;
 
@@ -10,28 +14,25 @@ public class UserServiceTests_Delete : UserServiceTests
     [Test]
     public void DeleteUser_NoThrow()
     {
-        _mockUserRepo.Setup(repo => repo.DeleteById(0)).Callback(() => Task.Delay(1));
-        _service.DeleteUser(0);
-
         Assert.DoesNotThrow(() => _service.DeleteUser(0));
     }
 
     [Test]
     public void DeleteUser_DeleteSucceed()
     {
-        bool deleted = false;
+        _mockUserRepo.Setup(repo => repo.DeleteById(0)).Verifiable();
 
-        _mockUserRepo.Setup(repo => repo.DeleteById(0)).Callback(() => deleted = true);
         _service.DeleteUser(0);
-
-        Assert.That(deleted, Is.True);
+        _mockUserRepo.Verify(repo => repo.DeleteById(0), Times.Once);
+        
+        Assert.Pass();
     }
 
     [Test]
     public void DeleteUser_ThrowWhenNotExists()
     {
-        _mockUserRepo.Setup(repo => repo.DeleteById(0)).Throws<RepoDataNotFoundException>();
-        
-        Assert.Throws<RepoDataNotFoundException>(() => _service.DeleteUser(0));
+        _mockUserRepo.Setup(repo => repo.DeleteById(0)).ThrowsAsync(new RepoDataNotFoundException());
+
+        Assert.ThrowsAsync<NotFoundServiceException>(() => _service.DeleteUser(0));
     }
 }

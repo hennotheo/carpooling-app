@@ -4,9 +4,9 @@ namespace CarPoolingAPI.Services;
 
 public interface IUserService : IDisposable, IAsyncDisposable
 {
-    IList<User> SearchUsers(int maxCount);
-    User GetUserById(int userId);
+    Task<IList<User>> SearchUsers(int maxCount);
+    Task<User> GetUserById(int userId);
     
-    User AddUser(User user);
-    void DeleteUser(int userId);
+    Task<User> AddUser(User user);
+    Task DeleteUser(int userId);
 }

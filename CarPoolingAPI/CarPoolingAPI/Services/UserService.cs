@@ -1,4 +1,5 @@
-﻿using CarPoolingAPICore.Exceptions;
+﻿using CarPoolingAPI.Exceptions;
+using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
 using CarPoolingAPICore.Repository;
@@ -9,7 +10,7 @@ public class UserService : IUserService
 {
     private IRepository<int, User> _userRepository;
 
-    private class FakeRepo : BaseRepository<int, User>
+    public class FakeRepo : BaseRepository<int, User>
     {
         public FakeRepo() : base()
         {
@@ -18,29 +19,36 @@ public class UserService : IUserService
         }
     }
 
-    public UserService()
+    public UserService(IRepository<int, User> userRepository)
     {
-        _userRepository = new FakeRepo();
+        _userRepository = userRepository;
     }
 
-    public IList<User> SearchUsers(int maxCount)
+    public async Task<IList<User>> SearchUsers(int maxCount)
     {
-        return _userRepository.GetAll(maxCount).Result;
+        return await _userRepository.GetAll(maxCount);
     }
 
-    public User GetUserById(int userId)
+    public async Task<User> GetUserById(int userId)
     {
-        return _userRepository.GetById(userId).GetAwaiter().GetResult();
+        return await _userRepository.GetById(userId);
     }
 
-    public User AddUser(User user)
+    public async Task<User> AddUser(User user)
     {
         throw new NotImplementedException();
     }
 
-    public void DeleteUser(int userId)
+    public async Task DeleteUser(int userId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _userRepository.DeleteById(userId);
+        }
+        catch (RepoDataNotFoundException)
+        {
+            throw new NotFoundServiceException($"User with id {userId} not found.");
+        }
     }
 
     public void Dispose()

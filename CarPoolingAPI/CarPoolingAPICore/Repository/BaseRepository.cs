@@ -29,7 +29,7 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
     {
         return await GetFirstByPredicate(entity => _idProp.PropertyEquals(entity, id));
     }
-    
+
     public async Task<T> GetFirstByPredicate(Func<T, bool> predicate)
     {
         T? value = await Task.Run(() => Entities
@@ -48,7 +48,7 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
 
     public async Task Update(T entity)
     {
-        TId id = (TId)_idProp.GetValue(entity);//TODO Change when implementing EFCore
+        TId id = (TId)_idProp.GetValue(entity); //TODO Change when implementing EFCore
 
         await DeleteById(id);
         await Add(entity);
@@ -56,9 +56,16 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
 
     public async Task DeleteById(TId id)
     {
-        T entity = await GetById(id);
+        try
+        {
+            T entity = await GetById(id);
 
-        await Task.Run(() => Entities.Remove(entity));
+            Entities.Remove(entity);
+        }
+        catch (Exception e)
+        {
+            throw new RepoDataNotFoundException();
+        }
     }
 
     public void Dispose()

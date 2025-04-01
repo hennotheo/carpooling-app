@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
+using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
 using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Models;
@@ -23,7 +24,7 @@ public class UserController : ControllerBase
     [HttpGet("Search", Name = "SearchUsers")]
     public IActionResult Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
-        ICollection<User> allUsers = _userService.SearchUsers(max);
+        ICollection<User> allUsers = _userService.SearchUsers(max).Result;
 
         if (allUsers.Count > 0)
             return Ok(allUsers);
@@ -34,17 +35,41 @@ public class UserController : ControllerBase
     [HttpGet("{userId}", Name = "GetUser")]
     public IActionResult GetUserById([FromRoute, Range(0, int.MaxValue)] int userId)
     {
+        return ExecuteServiceAction(() =>
+        {
+            User user = _userService.GetUserById(userId).Result;
+            return Ok(user);
+        });
+    }
+
+    [HttpDelete("{userId}", Name = "DeleteUser")]
+    public IActionResult DeleteUserById([FromRoute, Range(0, int.MaxValue)] int userId)
+    {
+        return ExecuteServiceAction(() =>
+        {
+            _userService.DeleteUser(userId).Wait();
+            return Ok("User deleted successfully");
+        });
+    }
+    
+    private IActionResult ExecuteServiceAction(Func<IActionResult>? action)
+    {
+        if (action == null)
+            return BadRequest("Action is null");
+        
         try
         {
-            User user = _userService.GetUserById(userId);
-            return Ok(user);
+            return action();
         }
-        catch (RepoDataNotFoundException e)
+        catch (AggregateException e)
         {
-            return NotFound();
-        }
-        catch (Exception e)
-        {
+            _logger.LogError(e.Message);
+            
+            if (e.InnerException is ServiceException)
+            {
+                return (e.InnerException! as ServiceException)!.ErrorAction();
+            }
+
             return BadRequest();
         }
     }

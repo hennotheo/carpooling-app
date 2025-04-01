@@ -17,14 +17,14 @@ public abstract class UserServiceTests
     };
     
     [SetUp]
-    public void Setup()
+    public virtual void Setup()
     {
         _mockUserRepo = new Mock<IRepository<int, User>>();
-        _service = new UserService();
+        _service = new UserService(_mockUserRepo.Object);
     }
 
     [TearDown]
-    public void TearDown()
+    public virtual void TearDown()
     {
         _service.Dispose();
     }

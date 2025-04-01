@@ -1,5 +1,7 @@
 using System.Runtime.CompilerServices;
 using CarPoolingAPI.Services;
+using CarPoolingAPICore.Interface;
+using CarPoolingAPICore.Models;
 
 [assembly: InternalsVisibleTo("Tests_CarPoolingAPI")]
 
@@ -14,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRepository<int, User>, UserService.FakeRepo>();
 
 var app = builder.Build();
 
