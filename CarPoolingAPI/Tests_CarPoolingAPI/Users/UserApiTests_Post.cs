@@ -18,7 +18,6 @@ public class UserApiTests_Post : UserApiTests
         HttpResponseMessage response = await AddUserPost(user);
 
         Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));
-        Assert.That(response.IsSuccessStatusCode, Is.True);
     }
 
     [Test]

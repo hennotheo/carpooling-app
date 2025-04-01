@@ -30,7 +30,7 @@ public class UserController : ControllerBase
         if (allUsers.Count > 0)
             return Ok(allUsers);
 
-        return NotFound();
+        return NoContent();
     }
 
     [HttpGet("{userId}", Name = nameof(GetUserById))]
