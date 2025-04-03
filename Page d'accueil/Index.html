@@ -3,9 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cote a Cote</title>
+    <title>Côte à Côte - Covoiturage</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
+
+    <!-- En tête / navbar -->
+    <header>
+        <div class="logo">
+            <!--Ici on pourra mettre le logo directement à la place-->
+            <h1>Côte À Côte</h1>
+            <p>Créateur d'Amitié</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Rechercher</a></li>
+                <li><a href="#">Publier</a></li>
+                <li><a href="#">Communauté</a></li>
+                <li><a href="#">Mes trajets</a></li>
+                <li><a href="#">Aidez-moi</a></li>
+                <li><img src="user-icon.png" alt="LA PP"></li>
+                <li><a href="#" class="btn">Sign in</a></li>
+                <li><a href="#" class="btn">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- La Photo -->
+    <section class="hero">
+        <img src="image.jpg" alt="la coccinelle ou la 2chevaux je sais jamais">
+    </section>
+
+    <!-- La searchbar -->
+    <section class="search-bar">
+        <input type="text" placeholder="Lieu de départ">
+        <input type="text" placeholder="Lieu d'arrivée">
+        <label for="travel-date">Date de départ</label>
+        <input type="date" id="travel-date" title="Sélectionnez une date pour votre trajet">
+        <button>🔍</button>
+    </section>
+
+    <!-- La page principale -->
+    <main>
+        <section class="map-and-users">
+            <!-- Carte de France -->
+            <div class="map">
+                <img src="map-france.jpg" alt="Carte de France">
+            </div>
+
+            <!-- Liste des covoiteurs -->
+            <div class="users">
+                <div class="user-card">
+                    <h3>Gerard B. 45 ans</h3>
+                    <p>Description courte ici...</p>
+                </div>
+                <div class="user-card">
+                    <h3>Nadege P. 32 ans</h3>
+                    <p>Description courte ici...</p>
+                </div>
+                <div class="user-card">
+                    <h3>Pessi P. 38 ans</h3>
+                    <p>Description courte ici...</p>
+                </div>
+                <div class="user-card">
+                    <h3>Titouan F. 18 ans</h3>
+                    <p>Description courte ici...</p>
+                </div>
+                <!--ici la barre de défilement-->
+            </div>
+        </section>
+
+        <!-- Section des avis -->
+        <section class="reviews">
+            <h2>Les commandes Biens Cuites</h2>
+            <div class="review">
+                <p class="stars">⭐⭐⭐⭐⭐</p>
+                <h4>Review title</h4>
+                <p>Review body</p>
+                <p><strong>Reviewer name</strong> - Date</p>
+            </div>
+            <div class="review">
+                <p class="stars">⭐⭐⭐⭐⭐</p>
+                <h4>Review title</h4>
+                <p>Review body</p>
+                <p><strong>Reviewer name</strong> - Date</p>
+            </div>
+            <div class="review">
+                <p class="stars">⭐⭐⭐⭐⭐</p>
+                <h4>Review title</h4>
+                <p>Review body</p>
+                <p><strong>Reviewer name</strong> - Date</p>
+            </div>
+        </section>
+    </main>
+
 </body>
 </html>
