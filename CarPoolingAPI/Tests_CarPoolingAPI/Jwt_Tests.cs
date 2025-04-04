@@ -25,10 +25,10 @@ public class Jwt_Tests
     [Test]
     public async Task GenerateJwtToken_ShouldReturnToken()
     {
-        var loginModel = new { Username = "testuser", Password = "password" };
+        var loginModel = new { Email = "testuser", Password = "password" };
         var content = new StringContent(JsonConvert.SerializeObject(loginModel), Encoding.UTF8, "application/json");
         
-        var response = await _client.PostAsync("/api/auth/login", content);
+        var response = await _client.PostAsync("/api/Auth/login", content);
         response.EnsureSuccessStatusCode();
         var responseString = await response.Content.ReadAsStringAsync();
         

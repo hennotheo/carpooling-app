@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
-using CarPoolingAPICore.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPoolingAPI.Controllers;
