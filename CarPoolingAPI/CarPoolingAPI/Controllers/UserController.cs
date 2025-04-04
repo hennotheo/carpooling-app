@@ -3,9 +3,7 @@ using System.Runtime.InteropServices;
 using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
-using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPoolingAPI.Controllers;
@@ -26,7 +24,7 @@ public class UserController : ControllerBase
     [HttpGet("Search", Name = "SearchUsers")]
     public async Task<IActionResult> Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
-        ICollection<User> allUsers = await _userService.SearchUsers(max);
+        ICollection<UserProfileDto> allUsers = await _userService.SearchUsers(max);
 
         if (allUsers.Count > 0)
             return Ok(allUsers);

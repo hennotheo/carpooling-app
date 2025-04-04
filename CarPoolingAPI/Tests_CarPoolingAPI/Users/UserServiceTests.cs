@@ -13,8 +13,8 @@ public abstract class UserServiceTests
     
     protected List<User> _data = new List<User>
     {
-        new User { Id = 1, Name = "John" },
-        new User { Id = 2, Name = "Jane" }
+        new User { Id = 1, FirstName = "John" },
+        new User { Id = 2, FirstName = "Jane" }
     };
     
     [SetUp]

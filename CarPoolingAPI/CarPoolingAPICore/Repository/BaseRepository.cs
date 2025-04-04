@@ -20,7 +20,7 @@ public class BaseRepository<TId, T> : IRepository<TId, T>
         _idProp = typeof(T).GetProperty("Id")!;
     }
 
-    public async Task<IList<T>> GetAll(int maxCount = int.MaxValue)
+    public async Task<IEnumerable<T>> GetAll(int maxCount = int.MaxValue)
     {
         return await Task.Run(() => Entities.Take(maxCount).ToList());
     }

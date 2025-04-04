@@ -22,10 +22,9 @@ public class UserApiTests_Post : UserApiTests
     [Test]
     public async Task AddUser_ConflictIfUserAlreadyExists()
     {
-        User user = new User() { Id = 0, Name = "John" };
         _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).ThrowsAsync(new AlreadyExistsServiceException(""));
 
-        HttpResponseMessage response = await AddUserPost(user);
+        HttpResponseMessage response = await AddUserPost(TestData.ValidUser);
 
         Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Conflict));
     }

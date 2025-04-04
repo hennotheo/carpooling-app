@@ -15,7 +15,9 @@ public struct UserProfileDto
         return new UserProfileDto()
         {
             Id = user.Id,
-            FirstName = user.Name
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email
         };
     }
 }

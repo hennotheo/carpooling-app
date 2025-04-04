@@ -15,7 +15,7 @@ public class RepositoryTests_GetAll
             var users = await userRepository.GetAll();
         });
     }
-    
+
     [Test(TestOf = typeof(UserTestData))]
     [TestCase(2)]
     [TestCase(6)]
@@ -31,8 +31,9 @@ public class RepositoryTests_GetAll
                 Name = "User" + i
             });
         }
+
         IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>(users.ToArray());
-        IList<UserTestData> result = await userRepository.GetAll(max);
+        ICollection<UserTestData> result = userRepository.GetAll(max).Result.ToList();
         Assert.That(result.Count, Is.LessThanOrEqualTo(max));
     }
 }

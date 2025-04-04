@@ -1,6 +1,7 @@
 ﻿using CarPoolingAPI.DTO;
 using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
+using Moq;
 
 namespace Tests_CarPoolingAPI;
 
@@ -32,17 +33,17 @@ public class UserApiTests_Get : UserApiTests
     [Test]
     public async Task SearchUsers_Exist()
     {
-      _mockUserService.Setup(service => service.SearchUsers(25)).Returns(Task.FromResult((IList<User>)_data));
-
-        HttpResponseMessage response = await _client.GetAsync(TestData.USER_ROOT + TestData.SEARCH_TEMPLATE);
-
-        Assert.That(response.IsSuccessStatusCode, Is.True);
+        _mockUserService.Setup(service => service.SearchUsers(25)).Returns(() => Task.FromResult((ICollection<UserProfileDto>)_data.Select(UserProfileDto.MapFromUser).ToList()));
+        
+          HttpResponseMessage response = await _client.GetAsync(TestData.USER_ROOT + TestData.SEARCH_TEMPLATE);
+        
+          Assert.That(response.IsSuccessStatusCode, Is.True);
     }
 
     [Test]
     public async Task SearchUsers_ReturnListOfUsers()
     {
-        _mockUserService.Setup(service => service.SearchUsers(25)).Returns(Task.FromResult((IList<User>)_data));
+        _mockUserService.Setup(service => service.SearchUsers(25)).Returns(() => Task.FromResult((ICollection<UserProfileDto>)_data.Select(UserProfileDto.MapFromUser).ToList()));
 
         HttpResponseMessage response = await _client.GetAsync(TestData.USER_ROOT + TestData.SEARCH_TEMPLATE);
 

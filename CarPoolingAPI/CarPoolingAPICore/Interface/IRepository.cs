@@ -2,7 +2,7 @@
 
 public interface IRepository<in TId, T> : IDisposable, IAsyncDisposable
 {
-    Task<IList<T>> GetAll(int maxCount = int.MaxValue);
+    Task<IEnumerable<T>> GetAll(int maxCount = int.MaxValue);
     Task<T> GetById(TId id);
     Task<T> GetFirstByPredicate(Func<T, bool> predicate);
     

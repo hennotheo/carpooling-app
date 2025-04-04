@@ -1,4 +1,5 @@
-﻿using CarPoolingAPI.DTO;
+﻿using System.Collections;
+using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Interface;
@@ -15,8 +16,8 @@ public class UserService : IUserService
     {
         public FakeRepo() : base()
         {
-            Entities.Add(new User { Id = 1, Name = "John" });
-            Entities.Add(new User { Id = 2, Name = "Jane" });
+            Entities.Add(new User { Id = 1, FirstName = "John" });
+            Entities.Add(new User { Id = 2, FirstName = "Jane" });
         }
     }
 
@@ -25,9 +26,11 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<IList<User>> SearchUsers(int maxCount)
+    public async Task<ICollection<UserProfileDto>> SearchUsers(int maxCount)
     {
-        return await _userRepository.GetAll(maxCount);
+        IEnumerable<User> list = await _userRepository.GetAll(maxCount);
+        
+        return list.Select(UserProfileDto.MapFromUser).ToArray();
     }
 
     public async Task<UserProfileDto> GetUserById(int userId)
@@ -40,9 +43,9 @@ public class UserService : IUserService
     public async Task<UserProfileDto> AddUser(User user)
     {
         if(await UserAlreadyExists(user))
-            throw new AlreadyExistsServiceException($"User with name {user.Name} already exists.");
+            throw new AlreadyExistsServiceException($"User with name {user.FirstName} already exists.");
         
-        if(string.IsNullOrEmpty(user.Name))
+        if(string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.Email))
             throw new BadRequestServiceException("Name cannot be null.");
         
         User rawData = await _userRepository.Add(user);
@@ -75,7 +78,7 @@ public class UserService : IUserService
     {
         try
         {
-            await _userRepository.GetFirstByPredicate(u => u.Name == user.Name);//TODO: Change to email
+            await _userRepository.GetFirstByPredicate(u => u.Email == user.Email);
             return true;
         }
         catch (RepoDataNotFoundException)
