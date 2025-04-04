@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Models;
@@ -9,13 +10,22 @@ namespace Tests_CarPoolingAPI;
 [TestFixture(Category = "Post")]
 public class UserServiceTests_Post : UserServiceTests
 {
+    private UserSignUpRequestDto _userSignUpRequestDto;
+    
+    public override void Setup()
+    {
+        base.Setup();
+
+        _userSignUpRequestDto = UserSignUpRequestDto.MapFromUser(TestData.ValidUser);
+    }
+
     [Test]
     public void AddUser_NoThrow()
     {
         SetupUserMockingDoesntExist();
         _mockUserRepo.Setup(repo => repo.Add(It.IsAny<User>())).ReturnsAsync(TestData.ValidUser);
 
-        Assert.DoesNotThrowAsync(() => _service.AddUser(TestData.ValidUser));
+        Assert.DoesNotThrowAsync(() => _service.AddUser(_userSignUpRequestDto));
     }
 
     [Test]
@@ -25,7 +35,7 @@ public class UserServiceTests_Post : UserServiceTests
         _mockUserRepo.Setup(repo => repo.Add(It.IsAny<User>())).ReturnsAsync(TestData.ValidUser);
         _mockUserRepo.CallBase = false;
 
-        await _service.AddUser(TestData.ValidUser);
+        await _service.AddUser(_userSignUpRequestDto);
 
         _mockUserRepo.Verify(repo => repo.Add(It.IsAny<User>()), Times.Once);
         Assert.Pass();
@@ -36,7 +46,7 @@ public class UserServiceTests_Post : UserServiceTests
     {
         _mockUserRepo.Setup(repo => repo.GetFirstByPredicate(It.IsAny<Func<User, bool>>())).ReturnsAsync(TestData.ValidUser);//Find it in data
 
-        Assert.ThrowsAsync<AlreadyExistsServiceException>(async () => await _service.AddUser(TestData.ValidUser));
+        Assert.ThrowsAsync<AlreadyExistsServiceException>(async () => await _service.AddUser(_userSignUpRequestDto));
     }
 
     [Test]
@@ -44,7 +54,7 @@ public class UserServiceTests_Post : UserServiceTests
     {
         SetupUserMockingDoesntExist();
 
-        Assert.ThrowsAsync<BadRequestServiceException>(() => _service.AddUser(new User()));
+        Assert.ThrowsAsync<BadRequestServiceException>(() => _service.AddUser(new UserSignUpRequestDto()));
     }
 
     private void SetupUserMockingDoesntExist()

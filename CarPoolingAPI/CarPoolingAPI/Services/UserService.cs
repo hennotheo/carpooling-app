@@ -40,8 +40,10 @@ public class UserService : IUserService
         return UserProfileResultDto.MapFromUser(rawData);
     }
 
-    public async Task<UserProfileResultDto> AddUser(User user)
+    public async Task<UserProfileResultDto> AddUser(UserSignUpRequestDto userDto)
     {
+        User user = userDto.MapToUser();
+        
         if(await UserAlreadyExists(user))
             throw new AlreadyExistsServiceException($"User with name {user.FirstName} already exists.");
         

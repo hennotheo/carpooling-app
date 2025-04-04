@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPICore.Models;
 using Moq;
@@ -12,7 +13,7 @@ public class UserApiTests_Post : UserApiTests
     [Test]
     public async Task AddUser_Exist()
     {
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).ReturnsAsync(TestData.ValidUserProfileResultDto);
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserSignUpRequestDto>())).ReturnsAsync(TestData.ValidUserProfileResultDto);
 
         HttpResponseMessage response = await AddUserPost(TestData.ValidUser);
 
@@ -22,7 +23,7 @@ public class UserApiTests_Post : UserApiTests
     [Test]
     public async Task AddUser_ConflictIfUserAlreadyExists()
     {
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).ThrowsAsync(new AlreadyExistsServiceException(""));
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserSignUpRequestDto>())).ThrowsAsync(new AlreadyExistsServiceException(""));
 
         HttpResponseMessage response = await AddUserPost(TestData.ValidUser);
 
