@@ -1,16 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
+using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
-using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPoolingAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
@@ -25,7 +24,7 @@ public class UserController : ControllerBase
     [HttpGet("Search", Name = "SearchUsers")]
     public async Task<IActionResult> Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
-        ICollection<User> allUsers = await _userService.SearchUsers(max);
+        ICollection<UserProfileResultDto> allUsers = await _userService.SearchUsers(max);
 
         if (allUsers.Count > 0)
             return Ok(allUsers);
@@ -38,7 +37,7 @@ public class UserController : ControllerBase
     {
         return await ExecuteServiceAction(async () =>
         {
-            User user = await _userService.GetUserById(userId);
+            UserProfileResultDto user = await _userService.GetUserById(userId);
             return Ok(user);
         });
     }
@@ -54,11 +53,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPost(Name = "AddUser")]
-    public async Task<IActionResult> AddUser([FromBody] User user)
+    public async Task<IActionResult> AddUser([FromBody] UserSignUpRequestDto user)
     {
         return await ExecuteServiceAction(async () =>
         {
-            User createdUser = await _userService.AddUser(user);
+            UserProfileResultDto createdUser = await _userService.AddUser(user);
             return CreatedAtRoute("GetUserById", new { userId = createdUser.Id }, createdUser);
         });
     }

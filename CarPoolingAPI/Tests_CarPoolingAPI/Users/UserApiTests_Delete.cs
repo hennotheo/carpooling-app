@@ -1,7 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using CarPoolingAPI.Controllers;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPICore.Exceptions;
 using Moq;
+using NUnit.Framework.Internal;
 
 namespace Tests_CarPoolingAPI;
 
@@ -12,7 +14,7 @@ public class UserApiTests_Delete : UserApiTests
     public async Task DeleteUser_Exist()
     {
         _mockUserService.Setup(service => service.DeleteUser(0)).Callback(() => Task.Delay(1));
-        HttpResponseMessage response = await _client.DeleteAsync(CarPoolingAPITests.USER_ROOT + "/" + 0);
+        HttpResponseMessage response = await _client.DeleteAsync($"{TestData.USER_REQUEST_ROOT}/0");
 
         Assert.That(response.IsSuccessStatusCode, Is.True);
     }
@@ -21,7 +23,7 @@ public class UserApiTests_Delete : UserApiTests
     public async Task DeleteUser_NotFoundWhenUserDoesntExist()
     {
         _mockUserService.Setup(service => service.DeleteUser(0)).ThrowsAsync(new NotFoundServiceException(""));
-        HttpResponseMessage response = await _client.DeleteAsync(CarPoolingAPITests.USER_ROOT + "/" + 0);
+        HttpResponseMessage response = await _client.DeleteAsync($"{TestData.USER_REQUEST_ROOT}/0");
 
         Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.NotFound));
     }
@@ -29,7 +31,7 @@ public class UserApiTests_Delete : UserApiTests
     [Test]
     public async Task DeleteUser_Succeed()
     {
-        HttpResponseMessage response = await _client.DeleteAsync(CarPoolingAPITests.USER_ROOT + "/" + 0);
+        HttpResponseMessage response = await _client.DeleteAsync($"{TestData.USER_REQUEST_ROOT}/0");
 
         Assert.That(response.IsSuccessStatusCode);
     }

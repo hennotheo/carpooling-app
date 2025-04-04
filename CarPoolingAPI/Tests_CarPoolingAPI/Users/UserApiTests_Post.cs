@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPICore.Models;
 using Moq;
@@ -12,10 +13,9 @@ public class UserApiTests_Post : UserApiTests
     [Test]
     public async Task AddUser_Exist()
     {
-        User user = new User() { Id = 0, Name = "John" };
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).ReturnsAsync(user);
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserSignUpRequestDto>())).ReturnsAsync(TestData.ValidUserProfileResultDto);
 
-        HttpResponseMessage response = await AddUserPost(user);
+        HttpResponseMessage response = await AddUserPost(TestData.ValidUser);
 
         Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));
     }
@@ -23,10 +23,9 @@ public class UserApiTests_Post : UserApiTests
     [Test]
     public async Task AddUser_ConflictIfUserAlreadyExists()
     {
-        User user = new User() { Id = 0, Name = "John" };
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).ThrowsAsync(new AlreadyExistsServiceException(""));
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserSignUpRequestDto>())).ThrowsAsync(new AlreadyExistsServiceException(""));
 
-        HttpResponseMessage response = await AddUserPost(user);
+        HttpResponseMessage response = await AddUserPost(TestData.ValidUser);
 
         Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Conflict));
     }
@@ -42,7 +41,7 @@ public class UserApiTests_Post : UserApiTests
     private async Task<HttpResponseMessage> AddUserPost(User user)
     {
         return await _client.PostAsync(
-            CarPoolingAPITests.USER_ROOT,
+            TestData.USER_REQUEST_ROOT,
             new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json"));
     }
 }

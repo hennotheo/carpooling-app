@@ -1,4 +1,6 @@
-﻿using CarPoolingAPI.Exceptions;
+﻿using System.Collections;
+using CarPoolingAPI.DTO;
+using CarPoolingAPI.Exceptions;
 using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
@@ -14,8 +16,8 @@ public class UserService : IUserService
     {
         public FakeRepo() : base()
         {
-            Entities.Add(new User { Id = 1, Name = "John" });
-            Entities.Add(new User { Id = 2, Name = "Jane" });
+            Entities.Add(new User { Id = 1, FirstName = "John" });
+            Entities.Add(new User { Id = 2, FirstName = "Jane" });
         }
     }
 
@@ -24,25 +26,32 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<IList<User>> SearchUsers(int maxCount)
+    public async Task<ICollection<UserProfileResultDto>> SearchUsers(int maxCount)
     {
-        return await _userRepository.GetAll(maxCount);
-    }
-
-    public async Task<User> GetUserById(int userId)
-    {
-        return await _userRepository.GetById(userId);
-    }
-
-    public async Task<User> AddUser(User user)
-    {
-        if(await UserAlreadyExists(user))
-            throw new AlreadyExistsServiceException($"User with name {user.Name} already exists.");
+        IEnumerable<User> list = await _userRepository.GetAll(maxCount);
         
-        if(string.IsNullOrEmpty(user.Name))
+        return list.Select(UserProfileResultDto.MapFromUser).ToArray();
+    }
+
+    public async Task<UserProfileResultDto> GetUserById(int userId)
+    {
+        User rawData = await _userRepository.GetById(userId);
+        
+        return UserProfileResultDto.MapFromUser(rawData);
+    }
+
+    public async Task<UserProfileResultDto> AddUser(UserSignUpRequestDto userDto)
+    {
+        User user = userDto.MapToUser();
+        
+        if(await UserAlreadyExists(user))
+            throw new AlreadyExistsServiceException($"User with name {user.FirstName} already exists.");
+        
+        if(string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.Email))
             throw new BadRequestServiceException("Name cannot be null.");
-            
-        return await _userRepository.Add(user);
+        
+        User rawData = await _userRepository.Add(user);
+        return UserProfileResultDto.MapFromUser(rawData);
     }
 
     public async Task DeleteUser(int userId)
@@ -71,7 +80,7 @@ public class UserService : IUserService
     {
         try
         {
-            await _userRepository.GetFirstByPredicate(u => u.Name == user.Name);//TODO: Change to email
+            await _userRepository.GetFirstByPredicate(u => u.Email == user.Email);
             return true;
         }
         catch (RepoDataNotFoundException)

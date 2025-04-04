@@ -1,5 +1,4 @@
-using CarPoolingAPICore.Models;
-using CarPoolingAPICore.Repository;
+using CarPoolingAPI.DTO;
 using Moq;
 
 namespace Tests_CarPoolingAPI;
@@ -29,9 +28,9 @@ public class UserServiceTests_Get : UserServiceTests
     [TestCase(2)]
     public async Task GetUsersById_ReturnValid(int id)
     {
-        _mockUserRepo.Setup(repo => repo.GetById(id)).ReturnsAsync(new User() { Id = id, Name = "John" });
+        _mockUserRepo.Setup(repo => repo.GetById(id)).ReturnsAsync(TestData.ValidUser);
 
-        User user = await _service.GetUserById(id);
-        Assert.That(user, Is.Not.Null);
+        UserProfileResultDto user = await _service.GetUserById(id);
+        Assert.That(user, Is.Not.Default);
     }
 }
