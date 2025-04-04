@@ -30,7 +30,7 @@ public class UserServiceTests_Get : UserServiceTests
     {
         _mockUserRepo.Setup(repo => repo.GetById(id)).ReturnsAsync(TestData.ValidUser);
 
-        UserProfileDto user = await _service.GetUserById(id);
+        UserProfileResultDto user = await _service.GetUserById(id);
         Assert.That(user, Is.Not.Default);
     }
 }

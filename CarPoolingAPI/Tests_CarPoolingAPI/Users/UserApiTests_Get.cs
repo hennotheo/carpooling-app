@@ -11,7 +11,7 @@ public class UserApiTests_Get : UserApiTests
     [Test]
     public async Task GetUserById_Exist()
     {
-        _mockUserService.Setup(service => service.GetUserById(0)).Returns(Task.FromResult(TestData.ValidUserProfileDto));
+        _mockUserService.Setup(service => service.GetUserById(0)).Returns(Task.FromResult(TestData.ValidUserProfileResultDto));
         HttpResponseMessage response = await GetUserByIdRequest(0);
 
         Assert.That(response.IsSuccessStatusCode, Is.True);
@@ -20,12 +20,12 @@ public class UserApiTests_Get : UserApiTests
     [Test]
     public async Task GetUserById_ReturnValidResult()
     {
-        UserProfileDto validUser = TestData.ValidUserProfileDto;
+        UserProfileResultDto validUser = TestData.ValidUserProfileResultDto;
         _mockUserService.Setup(service => service.GetUserById(0)).Returns(Task.FromResult(validUser));
         HttpResponseMessage response = await GetUserByIdRequest(0);
 
         var responseString = await response.Content.ReadAsStringAsync();
-        var user = Newtonsoft.Json.JsonConvert.DeserializeObject<UserProfileDto>(responseString);
+        var user = Newtonsoft.Json.JsonConvert.DeserializeObject<UserProfileResultDto>(responseString);
 
         Assert.That(user, Is.EqualTo(validUser));
     }
@@ -33,9 +33,9 @@ public class UserApiTests_Get : UserApiTests
     [Test]
     public async Task SearchUsers_Exist()
     {
-        _mockUserService.Setup(service => service.SearchUsers(25)).Returns(() => Task.FromResult((ICollection<UserProfileDto>)_data.Select(UserProfileDto.MapFromUser).ToList()));
+        _mockUserService.Setup(service => service.SearchUsers(25)).Returns(() => Task.FromResult((ICollection<UserProfileResultDto>)_data.Select(UserProfileResultDto.MapFromUser).ToList()));
         
-          HttpResponseMessage response = await _client.GetAsync(TestData.USER_ROOT + TestData.SEARCH_TEMPLATE);
+          HttpResponseMessage response = await _client.GetAsync(TestData.USER_REQUEST_ROOT + TestData.SEARCH_TEMPLATE);
         
           Assert.That(response.IsSuccessStatusCode, Is.True);
     }
@@ -43,9 +43,9 @@ public class UserApiTests_Get : UserApiTests
     [Test]
     public async Task SearchUsers_ReturnListOfUsers()
     {
-        _mockUserService.Setup(service => service.SearchUsers(25)).Returns(() => Task.FromResult((ICollection<UserProfileDto>)_data.Select(UserProfileDto.MapFromUser).ToList()));
+        _mockUserService.Setup(service => service.SearchUsers(25)).Returns(() => Task.FromResult((ICollection<UserProfileResultDto>)_data.Select(UserProfileResultDto.MapFromUser).ToList()));
 
-        HttpResponseMessage response = await _client.GetAsync(TestData.USER_ROOT + TestData.SEARCH_TEMPLATE);
+        HttpResponseMessage response = await _client.GetAsync(TestData.USER_REQUEST_ROOT + TestData.SEARCH_TEMPLATE);
 
         var responseString = await response.Content.ReadAsStringAsync();
         var users = Newtonsoft.Json.JsonConvert.DeserializeObject<List<User>>(responseString);
@@ -55,6 +55,6 @@ public class UserApiTests_Get : UserApiTests
 
     private async Task<HttpResponseMessage> GetUserByIdRequest(int id)
     {
-        return await _client.GetAsync(TestData.USER_ROOT + "/" + id);
+        return await _client.GetAsync(TestData.USER_REQUEST_ROOT + "/" + id);
     }
 }

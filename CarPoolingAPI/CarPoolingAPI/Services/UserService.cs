@@ -26,21 +26,21 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<ICollection<UserProfileDto>> SearchUsers(int maxCount)
+    public async Task<ICollection<UserProfileResultDto>> SearchUsers(int maxCount)
     {
         IEnumerable<User> list = await _userRepository.GetAll(maxCount);
         
-        return list.Select(UserProfileDto.MapFromUser).ToArray();
+        return list.Select(UserProfileResultDto.MapFromUser).ToArray();
     }
 
-    public async Task<UserProfileDto> GetUserById(int userId)
+    public async Task<UserProfileResultDto> GetUserById(int userId)
     {
         User rawData = await _userRepository.GetById(userId);
         
-        return UserProfileDto.MapFromUser(rawData);
+        return UserProfileResultDto.MapFromUser(rawData);
     }
 
-    public async Task<UserProfileDto> AddUser(User user)
+    public async Task<UserProfileResultDto> AddUser(User user)
     {
         if(await UserAlreadyExists(user))
             throw new AlreadyExistsServiceException($"User with name {user.FirstName} already exists.");
@@ -49,7 +49,7 @@ public class UserService : IUserService
             throw new BadRequestServiceException("Name cannot be null.");
         
         User rawData = await _userRepository.Add(user);
-        return UserProfileDto.MapFromUser(rawData);
+        return UserProfileResultDto.MapFromUser(rawData);
     }
 
     public async Task DeleteUser(int userId)

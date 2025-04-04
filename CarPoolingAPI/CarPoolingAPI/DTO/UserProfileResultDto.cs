@@ -2,7 +2,7 @@
 
 namespace CarPoolingAPI.DTO;
 
-public struct UserProfileDto
+public struct UserProfileResultDto
 {
     public int Id { get; set; }
     
@@ -10,9 +10,9 @@ public struct UserProfileDto
     public string LastName { get; set; }
     public string Email { get; set; }
 
-    public static UserProfileDto MapFromUser(User user)
+    public static UserProfileResultDto MapFromUser(User user)
     {
-        return new UserProfileDto()
+        return new UserProfileResultDto()
         {
             Id = user.Id,
             FirstName = user.FirstName,

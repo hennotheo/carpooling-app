@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CarPoolingAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
@@ -24,7 +24,7 @@ public class UserController : ControllerBase
     [HttpGet("Search", Name = "SearchUsers")]
     public async Task<IActionResult> Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
-        ICollection<UserProfileDto> allUsers = await _userService.SearchUsers(max);
+        ICollection<UserProfileResultDto> allUsers = await _userService.SearchUsers(max);
 
         if (allUsers.Count > 0)
             return Ok(allUsers);
@@ -37,7 +37,7 @@ public class UserController : ControllerBase
     {
         return await ExecuteServiceAction(async () =>
         {
-            UserProfileDto user = await _userService.GetUserById(userId);
+            UserProfileResultDto user = await _userService.GetUserById(userId);
             return Ok(user);
         });
     }
@@ -57,7 +57,7 @@ public class UserController : ControllerBase
     {
         return await ExecuteServiceAction(async () =>
         {
-            UserProfileDto createdUser = await _userService.AddUser(user);
+            UserProfileResultDto createdUser = await _userService.AddUser(user);
             return CreatedAtRoute("GetUserById", new { userId = createdUser.Id }, createdUser);
         });
     }
