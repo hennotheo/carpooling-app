@@ -32,14 +32,13 @@ public class AuthenticationService : IAuthenticationService
             throw new BadRequestServiceException("Password Invalid");
 
         User user = registerModel.MapToUser();
-
+        await _userService.AddUser(user);
         string token = _tokenService.GenerateToken(user);
-
-        await Task.Delay(100);
+        
         return new UserRegisterResponseDto()
         {
             Token = token,
-            UserId = -1
+            UserId = user.Id
         };
     }
 

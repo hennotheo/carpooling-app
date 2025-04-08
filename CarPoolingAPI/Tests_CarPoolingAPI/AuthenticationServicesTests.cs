@@ -89,16 +89,16 @@ public class AuthenticationServicesTests
     [Test]
     public async Task RegisterUser_ValidAddUserToService()
     {
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserRegisterRequestDto>())).Verifiable();
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).Verifiable();
 
         await _authenticationService.Register(TestData.ValidRegisterRequest);
-        _mockUserService.Verify(service => service.AddUser(It.IsAny<UserRegisterRequestDto>()), Times.Once);
+        _mockUserService.Verify(service => service.AddUser(It.IsAny<User>()), Times.Once);
     }
 
     [Test]
     public void RegisterUser_ThrowWhenUserAlreadyExists()
     {
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserRegisterRequestDto>())).ThrowsAsync(new ConflictServiceException("TEST"));
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).ThrowsAsync(new ConflictServiceException("TEST"));
 
         Assert.ThrowsAsync<ConflictServiceException>(async () => await _authenticationService.Register(TestData.ValidRegisterRequest));
     }
@@ -106,7 +106,7 @@ public class AuthenticationServicesTests
     [Test]
     public async Task RegisterUser_ValidReturnUserId()
     {
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserRegisterRequestDto>())).ReturnsAsync(TestData.ValidUser);
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<User>())).ReturnsAsync(TestData.ValidUser);
 
         UserRegisterResponseDto response = await _authenticationService.Register(TestData.ValidRegisterRequest);
         Assert.That(response.UserId, Is.EqualTo(TestData.ValidUser.Id));
