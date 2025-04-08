@@ -4,7 +4,7 @@ Decris toutes les requetes possibles pour l'API
 
 ### Users [/User]
 #### Create a User [POST]
-**[POST]** `/User`
+**[POST]** `api/User`
 - Response 201 (application/json)
 - Body (WIP)
 ```json
@@ -14,7 +14,7 @@ Decris toutes les requetes possibles pour l'API
 ```
 
 #### Get a User [GET]
-**[GET]** `/User/{id}`
+**[GET]** `api/User/{id}`
 - Response 200 (application/json)
 ```json
 {
@@ -23,11 +23,11 @@ Decris toutes les requetes possibles pour l'API
 ```
 
 #### Delete a User [DELETE]
-**[DELETE]** `/User/{id}`
+**[DELETE]** `api/User/{id}`
 - Response 200 (application/json)
 
 #### Search Users [GET]
-**[GET]** `/User/Search`
+**[GET]** `api/User/Search`
 - Response 200 (application/json)
 - Query Params :
   - 'max' : maximum number of users to return (default = 25)

@@ -1,6 +1,7 @@
 using CarPoolingAPI.DTO;
 using CarPoolingAPI.Services;
 using CarPoolingAPICore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPoolingAPI.Controllers;
@@ -16,10 +17,16 @@ public class AuthController : ControllerBase
         _tokenService = tokenService;
     }
 
+    [Authorize]
+    [HttpGet("test")]
+    public IActionResult Index()
+    {
+        return Ok("AuthController is working");
+    }
+    
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginDto loginModel)
     {
-        // Validation des informations d'identification de l'utilisateur
         User user = AuthenticateUser(loginModel);
         if (user == null)
         {
@@ -32,8 +39,6 @@ public class AuthController : ControllerBase
 
     private User AuthenticateUser(UserLoginDto loginModel)
     {
-        // Logique de validation des informations d'identification de l'utilisateur
-        // Retourner l'objet utilisateur si les informations sont valides
         return new User { FirstName = "testuser", Email = "testuser@example.com" };
     }
 }
