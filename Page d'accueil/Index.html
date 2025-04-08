@@ -1,152 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Côte à Côte - Covoiturage</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-     <!-- HEADER -->
-     <header>
-        <div class="logo">
-            <img src="Images/Côte à Côte Name.png" alt="Logo Côte à Côte">
-        </div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="Searchpage/index.html">Rechercher</a></li>
-                <li><a href="#">Publier</a></li>
-                <li><a href="#">Communauté</a></li>
-                <li><a href="#">Mes trajets</a></li>
-                <li><a href="#">Aidez-moi</a></li>
-            </ul>
-            <div class="profile">
-                <img src="Images/profil-de-lutilisateur.png" class="imgProf" alt="Profil">
-                <div class="auth-buttons">
-                    <button class="sign-in">Sign in</button>
-                    <button class="register">Register</button>
-                </div>
-            </div>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cote à Cote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="styles.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <img src="../Images/Icones/Côte à Côte Name.png" alt="Cote a cote" class="logo">
+        
+        <nav class="main-nav">
+          <ul>
+            <li class="active"><a href="#">Rechercher</a></li>
+            <li><a href="#">Publier</a></li>
+            <li><a href="#">Communauté</a></li>
+            <li><a href="#">Mes trajets</a></li>
+            <li><a href="#">Aidez-moi</a></li>
+          </ul>
         </nav>
-    </header>
 
-    <!-- La Photo -->
-    <section class="baniere1">
-        <img src="https://www.planet-ride.com/wp-content/uploads/2015/10/voyage-france-2cv-route-campagne-plante-ride.jpg" alt="la coccinelle ou la 2chevaux je sais jamais">
-    </section>
-
-    <!-- La searchbar -->
-    <section class="search-bar">
-        <div class="search-item">
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" placeholder="Lieu de départ">
-        </div>
-        <div class="search-item">
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" placeholder="Lieu d’arrivée">
-        </div>
-        <div class="search-item">
-            <i class="fas fa-calendar-alt"></i>
-            <label for="date-input">Date de départ</label>
-            <input type="date" id="date-input" title="Sélectionnez une date" placeholder="Choisissez une date">
-        </div>
-        <button class="search-btn" title="Rechercher">
-            <i class="fas fa-search"></i>
-        </button>
-    </section>
-
-    <!-- La page principale -->
-    <main>
-        <!-- La map -->
-        <section class="map-profiles-section">
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99266.27373366256!2d2.2022813502071727!3d49.89879178350202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e78413d78b760b%3A0x40af13e816220e0!2sAmiens!5e1!3m2!1sfr!2sfr!4v1743685979257!5m2!1sfr!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="user-actions">
+          <div class="user-profile">
+            <div class="user-menu">
+              <img src="../Images/Icones/profil-de-lutilisateur.png" alt="User" class="user-icon">
+              <img src="../Images/Icones/fleche-vers-le-bas.png" alt="Menu" class="dropdown-icon">
             </div>
+            <div class="auth-buttons">
+              <button class="btn btn-outline">Sign in</button>
+              <button class="btn btn-primary">Register</button>
+            </div>
+          </div>
+        </div>
+      </header>
 
-        <!-- Les profiles des covoiteurs -->
-            <div class="profiles-container">
-              <div class="profile-card">
+      <div class="red-separator"></div>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <img src="https://www.planet-ride.com/wp-content/uploads/2015/10/voyage-france-2cv-route-campagne-plante-ride.jpg" alt="Vintage car on country road" class="hero-image">
+        
+        <div class="search-container">
+          <div class="search-input">
+            <img src="../Images/Icones/broche-de-localisation.png" alt="Location" class="input-icon">
+            <input type="text" placeholder="Lieu de départ">
+            <img src="../Images/Icones/loupe.png" alt="Search" class="input-icon">
+          </div>
+
+          <div class="search-input">
+            <img src="../Images/Icones/localisateur.png" alt="Location" class="input-icon">
+            <input type="text" placeholder="Lieu d'arrivée">
+            <img src="../Images/Icones/loupe.png" alt="Search" class="input-icon">
+          </div>
+
+          <div class="search-input">
+            <img src="../Images/Icones/calendrier.png" alt="Calendar" class="input-icon">
+            <input type="text" placeholder="Date du départ">
+            <img src="../Images/Icones/loupe.png" alt="Search" class="input-icon">
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Map Section -->
+        <section class="map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99266.27373366256!2d2.2022813502071727!3d49.89879178350202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e78413d78b760b%3A0x40af13e816220e0!2sAmiens!5e1!3m2!1sfr!2sfr!4v1743685979257!5m2!1sfr!2sfr" class="map-france"></iframe>
+        </section>
+
+        <!-- Profiles Section -->
+        <section class="profiles-section">
+          <div class="profiles-container">
+            <div class="testimonial-grid">
+              <div class="testimonial-card">
                 <h3>Gerard B. 45 ans</h3>
                 <p>A dialog is a type of modal window that appears in front of app content to provide critical information, or prompt for a decision to be made.</p>
               </div>
-              <div class="profile-card">
+              <div class="testimonial-card">
                 <h3>Nadege P. 32 ans</h3>
                 <p>A dialog is a type of modal window that appears in front of app content to provide critical information, or prompt for a decision to be made.</p>
               </div>
-              <div class="profile-card">
+              <div class="testimonial-card">
                 <h3>Pessi P. 38 ans</h3>
                 <p>A dialog is a type of modal window that appears in front of app content to provide critical information, or prompt for a decision to be made.</p>
               </div>
-              <div class="profile-card">
+              <div class="testimonial-card">
                 <h3>Titouan F. 18 ans</h3>
                 <p>A dialog is a type of modal window that appears in front of app content to provide critical information, or prompt for a decision to be made.</p>
               </div>
-                <!--ici la barre de défilement-->
             </div>
+            <div class="profiles-scrollbar">
+              <div class="scrollbar-thumb"></div>
+            </div>
+          </div>
         </section>
+      </div>
 
-        <!-- Section des avis -->
-            <h2>Les commandes Biens Cuites</h2>
-        <section class="reviews">      
-            <div class="review">
-                <p class="stars">⭐⭐⭐⭐⭐</p>
-                <h4>Review title</h4>
-                <p>Review body</p>
-                <p><strong>Reviewer name</strong> - Date</p>
+      <!-- Reviews Section -->
+      <section class="reviews">
+        <h2>Les commandes Biens Cuites</h2>
+        <div class="reviews-grid">
+          <div class="review-card">
+            <div class="stars">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
             </div>
-            <div class="review">
-                <p class="stars">⭐⭐⭐⭐⭐</p>
-                <h4>Review title</h4>
-                <p>Review body</p>
-                <p><strong>Reviewer name</strong> - Date</p>
+            <h3>Review title</h3>
+            <p>Review body</p>
+            <div class="reviewer">
+              <div class="reviewer-avatar"></div>
+              <div class="reviewer-info">
+                <div class="reviewer-name">Reviewer name</div>
+                <div class="reviewer-date">Date</div>
+              </div>
             </div>
-            <div class="review">
-                <p class="stars">⭐⭐⭐⭐⭐</p>
-                <h4>Review title</h4>
-                <p>Review body</p>
-                <p><strong>Reviewer name</strong> - Date</p>
+          </div>
+          <div class="review-card">
+            <div class="stars">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+                <img src="../Images/Icones/etoile.png" alt="Star" class="star">
             </div>
-        </section>
-        <!-- Section photos -->
-    <section class="vintage-section">
+            <h3>Review title 2</h3>
+            <p>Review body</p>
+            <div class="reviewer">
+              <div class="reviewer-avatar"></div>
+              <div class="reviewer-info">
+                <div class="reviewer-name">Reviewer name</div>
+                <div class="reviewer-date">Date</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="stars">
+              <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+              <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+              <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+              <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+              <img src="../Images/Icones/etoile.png" alt="Star" class="star">
+            </div>
+            <h3>Review title 3</h3>
+            <p>Review body</p>
+            <div class="reviewer">
+              <div class="reviewer-avatar"></div>
+              <div class="reviewer-info">
+                <div class="reviewer-name">Reviewer name</div>
+                <div class="reviewer-date">Date</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section class="gallery">
         <img src="https://www.radiofrance.fr/s3/cruiser-production-eu3/2023/06/a9914c48-e496-40ea-ab45-003b652d5294/640x340_sc_sc-gettyimages-548140927.jpg" alt="1 photo ou deux">
         <img src="https://www.lamarseillaise.fr/binrepository/400x296/1c59/400d225/none/150910102/CPTW/photo-4_542-6033008_20220924072456.jpg" alt="1 photo ou deux">
-    </section>
-    </main>
-    </body>
-    
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-left">
-                <p>CoteACote.fr</p>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <h2>CoteACote.fr</h2>
+            <div class="social-icons">
+                <a href="#"><img src="../Images/Icones/facebook.png" alt="Facebook"></a>
+                <a href="#"><img src="../Images/Icones/linkedin.png" alt="LinkedIn"></a>
+                <a href="#"><img src="../Images/Icones/youtube.png" alt="YouTube"></a>
+                <a href="#"><img src="../Images/Icones/instagram.png" alt="Instagram"></a>
             </div>
-            <div class="footer-right">
-                <a href="#"><img src="Images/facebook.png" alt="Facebook"></a>
-                <a href="#"><img src="Images/linkedin.png" alt="LinkedIn"></a>
-                <a href="#"><img src="Images/youtube.png" alt="YouTube"></a>
-                <a href="#"><img src="Images/instagram.png" alt="Instagram"></a>
+          </div>
+          <div class="footer-links">
+            <div class="footer-column">
+                <h4>À propos</h4>
+                <a href="#">Qui sommes-nous</a>
+                <a href="#">Contact</a>
+                <a href="#">Carrières</a>
             </div>
+            <div class="footer-column">
+                <h4>Aide</h4>
+                <a href="#">Centre d'aide</a>
+                <a href="#">FAQ</a>
+                <a href="#">Support</a>
+            </div>
+            <div class="footer-column">
+                <h4>Légal</h4>
+                <a href="#">Conditions</a>
+                <a href="#">Confidentialité</a>
+                <a href="#">Cookies</a>
+            </div>
+            </div>
+          </div>
         </div>
-        <div class="footer-links">
-            <div class="column">
-                <h3>Topic</h3>
-                <a href="#">Page</a>
-                <a href="#">Page</a>
-                <a href="#">Page</a>
-            </div>
-            <div class="column">
-                <h3>Topic</h3>
-                <a href="#">Page</a>
-                <a href="#">Page</a>
-                <a href="#">Page</a>
-            </div>
-            <div class="column">
-                <h3>Topic</h3>
-                <a href="#">Page</a>
-                <a href="#">Page</a>
-                <a href="#">Page</a>
-            </div>
-        </div>
-    </footer>
+      </footer>
+    </div>
+  </body>
 </html>
