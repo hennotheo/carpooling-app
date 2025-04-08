@@ -8,7 +8,7 @@ using CarPoolingAPICore.Repository;
 
 namespace CarPoolingAPI.Services;
 
-public class UserService : IUserService
+public sealed class UserService : IUserService
 {
     private IRepository<int, User> _userRepository;
 

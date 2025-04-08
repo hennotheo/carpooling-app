@@ -24,7 +24,7 @@ public class AuthController : CarPoolingAPIController<AuthController>
     {
         return await ExecuteServiceAction(async () =>
         {
-            UserRegisterResponseDto response = await _authenticationService.Register(registerModel);
+            UserAuthResponseDto response = await _authenticationService.Register(registerModel);
             return Ok(response);
         });
     }

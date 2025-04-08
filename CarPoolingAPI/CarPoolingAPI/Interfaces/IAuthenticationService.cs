@@ -4,6 +4,6 @@ namespace CarPoolingAPI.Services;
 
 public interface IAuthenticationService : IDisposable, IAsyncDisposable
 {
-    Task<UserRegisterResponseDto> Register(UserRegisterRequestDto registerModel);
-    Task<UserLoginResponseDto> Login(UserLoginDto loginModel);
+    Task<UserAuthResponseDto> Register(UserRegisterRequestDto registerModel);
+    Task<UserAuthResponseDto> Login(UserLoginDto loginModel);
 }

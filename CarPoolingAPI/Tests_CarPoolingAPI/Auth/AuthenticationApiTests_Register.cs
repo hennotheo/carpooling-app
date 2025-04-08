@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace Tests_CarPoolingAPI;
 
 [TestFixture(Category = "Authentication")]
-public class AuthenticationApiTests
+public class AuthenticationApiTests_Register
 {
     private HttpClient _client;
     private Mock<IAuthenticationService> _mockAuthenticationService;
@@ -34,7 +34,7 @@ public class AuthenticationApiTests
     [Test]
     public async Task RegisterUser_Exist()
     {
-        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidRegisterResponse));
+        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidAuthResponse));
 
         var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("/api/Auth/register", content);
@@ -45,7 +45,7 @@ public class AuthenticationApiTests
     [Test]
     public async Task RegisterUser_ValidReturnToken()
     {
-        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidRegisterResponse));
+        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidAuthResponse));
 
         var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("/api/Auth/register", content);
@@ -59,7 +59,7 @@ public class AuthenticationApiTests
     [Test]
     public async Task RegisterUser_ValidReturnUserId()
     {
-        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidRegisterResponse));
+        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidAuthResponse));
 
         var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("/api/Auth/register", content);

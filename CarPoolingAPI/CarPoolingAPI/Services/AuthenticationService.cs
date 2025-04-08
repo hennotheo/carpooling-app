@@ -1,12 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
-using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
 
 namespace CarPoolingAPI.Services;
 
-public class AuthenticationService : IAuthenticationService
+public sealed class AuthenticationService : IAuthenticationService
 {
     private readonly ITokenService _tokenService;
     private readonly IUserService _userService;
@@ -17,7 +16,7 @@ public class AuthenticationService : IAuthenticationService
         _userService = userService;
     }
 
-    public async Task<UserRegisterResponseDto> Register(UserRegisterRequestDto registerModel)
+    public async Task<UserAuthResponseDto> Register(UserRegisterRequestDto registerModel)
     {
         if (!CheckNameString(registerModel.FirstName))
             throw new BadRequestServiceException("First Name Invalid");
@@ -35,14 +34,14 @@ public class AuthenticationService : IAuthenticationService
         await _userService.AddUser(user);
         string token = _tokenService.GenerateToken(user);
         
-        return new UserRegisterResponseDto()
+        return new UserAuthResponseDto()
         {
             Token = token,
             UserId = user.Id
         };
     }
 
-    public Task<UserLoginResponseDto> Login(UserLoginDto loginModel)
+    public Task<UserAuthResponseDto> Login(UserLoginDto loginModel)
     {
         throw new NotImplementedException();
     }
