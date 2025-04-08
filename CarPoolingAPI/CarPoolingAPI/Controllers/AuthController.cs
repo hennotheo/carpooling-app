@@ -8,27 +8,31 @@ namespace CarPoolingAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController : CarPoolingAPIController<AuthController>
 {
-    private readonly TokenService _tokenService;
+    private readonly ITokenService _tokenService;
+    private readonly IAuthenticationService _authenticationService;
 
-    public AuthController(TokenService tokenService)
+    public AuthController(ITokenService tokenService, IAuthenticationService authenticationService, ILogger<AuthController> logger) : base(logger)
     {
         _tokenService = tokenService;
+        _authenticationService = authenticationService;
     }
 
     [HttpPost("register")]
-    public IActionResult Register([FromBody] UserRegisterRequestDto registerModel)
+    public async Task<IActionResult> Register([FromBody] UserRegisterRequestDto registerModel)
     {
-        User user = registerModel.MapToUser();
-
-        string token = _tokenService.GenerateToken(user);
-        return Ok(new UserRegisterResponseDto { Token = token, UserId = user.Id });
+        return await ExecuteServiceAction(async () =>
+        {
+            UserRegisterResponseDto response = await _authenticationService.Register(registerModel);
+            return Ok(response);
+        });
     }
 
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginDto loginModel)
     {
+        return BadRequest("Not implemented");
         User user = AuthenticateUser(loginModel);
         if (user == null)
         {

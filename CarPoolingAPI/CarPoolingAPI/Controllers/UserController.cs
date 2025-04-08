@@ -9,14 +9,12 @@ namespace CarPoolingAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UserController : CarPoolingAPIController<UserController>
 {
-    private readonly ILogger<UserController> _logger;
     private readonly IUserService _userService;
 
-    public UserController(ILogger<UserController> logger, IUserService userService)
+    public UserController(ILogger<UserController> logger, IUserService userService) : base(logger)
     {
-        _logger = logger;
         _userService = userService;
     }
 
@@ -49,26 +47,5 @@ public class UserController : ControllerBase
             await _userService.DeleteUser(userId);
             return Ok("User deleted successfully");
         });
-    }
-
-    private async Task<IActionResult> ExecuteServiceAction(Func<Task<IActionResult>>? action)
-    {
-        if (action == null)
-            return BadRequest("Action is null");
-
-        try
-        {
-            return await action();
-        }
-        catch (ServiceException e)
-        {
-            _logger.LogError(e.StackTrace);
-            return e.ErrorAction();
-        }
-        catch(Exception e)
-        {
-            _logger.LogError(e.StackTrace);
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
     }
 }

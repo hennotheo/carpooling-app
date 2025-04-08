@@ -10,8 +10,10 @@ public static class TestData
     public const string SEARCH_TEMPLATE = "/SEARCH";
 
     public const string USER_REQUEST_ROOT = TestData.API_ROOT + TestData.USER_ROOT;
+    public const string VALID_TOKEN = "zpojdzjdozjdojakpdp^q";
 
     public static readonly User ValidUser = new() { Id = 0, FirstName = "John", LastName = "zz", Email = "iojojoj" };
     public static readonly UserProfileResultDto ValidUserProfileResultDto = new() { Id = 0, FirstName = "John", LastName = "K", Email = "john@jonmail.com" };
     public static readonly UserRegisterRequestDto ValidRegisterRequest = new() { FirstName = "John", LastName = "Doe", Email = "john.doe@test.com", Password = "PASSword123?" };
+    public static readonly UserRegisterResponseDto ValidRegisterResponse = new() { Token = VALID_TOKEN, UserId = 0 };
 }

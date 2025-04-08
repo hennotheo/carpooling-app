@@ -1,4 +1,5 @@
-﻿using CarPoolingAPICore.Models;
+﻿using System.Text.RegularExpressions;
+using CarPoolingAPICore.Models;
 
 namespace CarPoolingAPI.DTO;
 
@@ -18,7 +19,7 @@ public struct UserRegisterRequestDto
             Email = user.Email
         };
     }
-    
+
     public User MapToUser()
     {
         return new User()

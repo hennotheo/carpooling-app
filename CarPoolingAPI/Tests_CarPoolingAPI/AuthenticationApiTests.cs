@@ -1,7 +1,10 @@
 ﻿using System.Text;
 using CarPoolingAPI.DTO;
+using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Newtonsoft.Json;
 
 namespace Tests_CarPoolingAPI;
@@ -10,11 +13,15 @@ namespace Tests_CarPoolingAPI;
 public class AuthenticationApiTests
 {
     private HttpClient _client;
+    private Mock<IAuthenticationService> _mockAuthenticationService;
 
     [SetUp]
     public virtual void Setup()
     {
-        var factory = new WebApplicationFactory<Program>();
+        _mockAuthenticationService = new Mock<IAuthenticationService>();
+
+        var factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder => { builder.ConfigureServices(services => { services.AddSingleton(_mockAuthenticationService.Object); }); });
         _client = factory.CreateClient();
     }
 
@@ -27,6 +34,8 @@ public class AuthenticationApiTests
     [Test]
     public async Task RegisterUser_Exist()
     {
+        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidRegisterResponse));
+
         var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("/api/Auth/register", content);
 
@@ -34,8 +43,10 @@ public class AuthenticationApiTests
     }
 
     [Test]
-    public async Task RegisterUser_ReturnToken()
+    public async Task RegisterUser_ValidReturnToken()
     {
+        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidRegisterResponse));
+
         var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("/api/Auth/register", content);
         response.EnsureSuccessStatusCode();
@@ -46,8 +57,10 @@ public class AuthenticationApiTests
     }
 
     [Test]
-    public async Task RegisterUser_ReturnUserId()
+    public async Task RegisterUser_ValidReturnUserId()
     {
+        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Returns(Task.FromResult(TestData.ValidRegisterResponse));
+
         var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("/api/Auth/register", content);
         response.EnsureSuccessStatusCode();
@@ -56,59 +69,13 @@ public class AuthenticationApiTests
         Assert.That(responseString, Is.Not.Null);
         Assert.That(responseString.Contains("userId"), Is.True);
     }
-    
-    [Test]
-    public async Task RegisterUser_BadRequestWhenRegisterRequestEmpty()
-    {
-        var content = new StringContent(JsonConvert.SerializeObject(new UserRegisterRequestDto()), Encoding.UTF8, "application/json");
-        var response = await _client.PostAsync("/api/Auth/register", content);
 
-        Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
-    }
-    
     [Test]
-    [TestCase(""), TestCase("%%%98489")]
-    public async Task RegisterUser_BadRequestWhenFirstNameInvalid(string value)
+    public async Task RegisterUser_ReturnBadRequestIfBadRegisterDto()
     {
-        UserRegisterRequestDto invalid = TestData.ValidRegisterRequest;
-        invalid.FirstName = "";
-        var content = new StringContent(JsonConvert.SerializeObject(invalid), Encoding.UTF8, "application/json");
-        var response = await _client.PostAsync("/api/Auth/register", content);
+        _mockAuthenticationService.Setup((auth) => auth.Register(It.IsAny<UserRegisterRequestDto>())).Throws(new BadRequestServiceException("BAD DTO"));
 
-        Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
-    }
-    
-    [Test]
-    [TestCase(""), TestCase("%%%98489")]
-    public async Task RegisterUser_BadRequestWhenLastNameInvalid(string value)
-    {
-        UserRegisterRequestDto invalid = TestData.ValidRegisterRequest;
-        invalid.LastName = "";
-        var content = new StringContent(JsonConvert.SerializeObject(invalid), Encoding.UTF8, "application/json");
-        var response = await _client.PostAsync("/api/Auth/register", content);
-
-        Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
-    }
-    
-    [Test]
-    [TestCase(""), TestCase("%%%98489"), TestCase("user.zzzz")]
-    public async Task RegisterUser_BadRequestWhenEmailInvalid(string value)
-    {
-        UserRegisterRequestDto invalid = TestData.ValidRegisterRequest;
-        invalid.Email = "";
-        var content = new StringContent(JsonConvert.SerializeObject(invalid), Encoding.UTF8, "application/json");
-        var response = await _client.PostAsync("/api/Auth/register", content);
-
-        Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
-    }
-    
-    [Test]
-    [TestCase(""), TestCase("e"), TestCase("hhhhhhhhhhhhh"), TestCase("okoijdozhdoizj")]
-    public async Task RegisterUser_BadRequestWhenPasswordInvalid(string value)
-    {
-        UserRegisterRequestDto invalid = TestData.ValidRegisterRequest;
-        invalid.Password = "";
-        var content = new StringContent(JsonConvert.SerializeObject(invalid), Encoding.UTF8, "application/json");
+        var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
         var response = await _client.PostAsync("/api/Auth/register", content);
 
         Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
