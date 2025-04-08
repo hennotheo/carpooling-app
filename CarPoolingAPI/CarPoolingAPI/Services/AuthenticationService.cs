@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
+using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
 
 namespace CarPoolingAPI.Services;
@@ -8,10 +9,12 @@ namespace CarPoolingAPI.Services;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly ITokenService _tokenService;
+    private readonly IUserService _userService;
 
-    public AuthenticationService(ITokenService tokenService)
+    public AuthenticationService(ITokenService tokenService, IUserService userService)
     {
         _tokenService = tokenService;
+        _userService = userService;
     }
 
     public async Task<UserRegisterResponseDto> Register(UserRegisterRequestDto registerModel)
@@ -31,7 +34,7 @@ public class AuthenticationService : IAuthenticationService
         User user = registerModel.MapToUser();
 
         string token = _tokenService.GenerateToken(user);
-        // Simulate saving the user to a database
+
         await Task.Delay(100);
         return new UserRegisterResponseDto()
         {
@@ -81,9 +84,11 @@ public class AuthenticationService : IAuthenticationService
 
     public void Dispose()
     {
+        _userService.Dispose();
     }
 
     public async ValueTask DisposeAsync()
     {
+        await _userService.DisposeAsync();
     }
 }

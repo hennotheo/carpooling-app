@@ -8,6 +8,6 @@ public interface IUserService : IDisposable, IAsyncDisposable
     Task<ICollection<UserProfileResultDto>> SearchUsers(int maxCount);
     Task<UserProfileResultDto> GetUserById(int userId);
     
-    Task<UserProfileResultDto> AddUser(UserRegisterRequestDto userDto);
+    Task<User> AddUser(UserRegisterRequestDto userDto);
     Task DeleteUser(int userId);
 }

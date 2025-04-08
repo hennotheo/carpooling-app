@@ -1,6 +1,7 @@
 ﻿using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
+using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
 using Moq;
 
@@ -10,13 +11,15 @@ namespace Tests_CarPoolingAPI;
 public class AuthenticationServicesTests
 {
     private Mock<ITokenService> _mockTokenService;
+    private Mock<IUserService> _mockUserService;
     private AuthenticationService _authenticationService;
 
     [SetUp]
     public void Setup()
     {
         _mockTokenService = new Mock<ITokenService>();
-        _authenticationService = new AuthenticationService(_mockTokenService.Object);
+        _mockUserService = new Mock<IUserService>();
+        _authenticationService = new AuthenticationService(_mockTokenService.Object, _mockUserService.Object);
 
         _mockTokenService.Setup(token => token.GenerateToken(It.IsAny<User>())).Returns(TestData.VALID_TOKEN);
     }
@@ -55,7 +58,7 @@ public class AuthenticationServicesTests
         invalid.FirstName = value;
         Assert.ThrowsAsync<BadRequestServiceException>(async () => await _authenticationService.Register(invalid));
     }
-    
+
     [Test]
     [TestCase(""), TestCase("%%%98489")]
     public void RegisterUser_ThrowWhenLastNameInvalid(string value)
@@ -64,7 +67,7 @@ public class AuthenticationServicesTests
         invalid.LastName = value;
         Assert.ThrowsAsync<BadRequestServiceException>(async () => await _authenticationService.Register(invalid));
     }
-    
+
     [Test]
     [TestCase(""), TestCase("%%%98489"), TestCase("user.zzzz")]
     public void RegisterUser_ThrowWhenEmailInvalid(string value)
@@ -73,7 +76,7 @@ public class AuthenticationServicesTests
         invalid.Email = value;
         Assert.ThrowsAsync<BadRequestServiceException>(async () => await _authenticationService.Register(invalid));
     }
-    
+
     [Test]
     [TestCase(""), TestCase("e"), TestCase("hhhhhhhhhhhhh"), TestCase("okoijdozhdoizj")]
     public void RegisterUser_ThrowWhenPasswordInvalid(string value)
@@ -81,5 +84,31 @@ public class AuthenticationServicesTests
         UserRegisterRequestDto invalid = TestData.ValidRegisterRequest;
         invalid.Password = value;
         Assert.ThrowsAsync<BadRequestServiceException>(async () => await _authenticationService.Register(invalid));
+    }
+
+    [Test]
+    public async Task RegisterUser_ValidAddUserToService()
+    {
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserRegisterRequestDto>())).Verifiable();
+
+        await _authenticationService.Register(TestData.ValidRegisterRequest);
+        _mockUserService.Verify(service => service.AddUser(It.IsAny<UserRegisterRequestDto>()), Times.Once);
+    }
+
+    [Test]
+    public void RegisterUser_ThrowWhenUserAlreadyExists()
+    {
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserRegisterRequestDto>())).ThrowsAsync(new ConflictServiceException("TEST"));
+
+        Assert.ThrowsAsync<ConflictServiceException>(async () => await _authenticationService.Register(TestData.ValidRegisterRequest));
+    }
+
+    [Test]
+    public async Task RegisterUser_ValidReturnUserId()
+    {
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserRegisterRequestDto>())).ReturnsAsync(TestData.ValidUser);
+
+        UserRegisterResponseDto response = await _authenticationService.Register(TestData.ValidRegisterRequest);
+        Assert.That(response.UserId, Is.EqualTo(TestData.ValidUser.Id));
     }
 }

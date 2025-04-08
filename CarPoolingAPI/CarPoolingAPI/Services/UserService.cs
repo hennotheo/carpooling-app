@@ -29,29 +29,29 @@ public class UserService : IUserService
     public async Task<ICollection<UserProfileResultDto>> SearchUsers(int maxCount)
     {
         IEnumerable<User> list = await _userRepository.GetAll(maxCount);
-        
+
         return list.Select(UserProfileResultDto.MapFromUser).ToArray();
     }
 
     public async Task<UserProfileResultDto> GetUserById(int userId)
     {
         User rawData = await _userRepository.GetById(userId);
-        
+
         return UserProfileResultDto.MapFromUser(rawData);
     }
 
-    public async Task<UserProfileResultDto> AddUser(UserRegisterRequestDto userDto)
+    public async Task<User> AddUser(UserRegisterRequestDto userDto)
     {
         User user = userDto.MapToUser();
-        
-        if(await UserAlreadyExists(user))
+
+        if (await UserAlreadyExists(user))
             throw new AlreadyExistsServiceException($"User with name {user.FirstName} already exists.");
-        
-        if(string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.Email))
+
+        if (string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.Email))
             throw new BadRequestServiceException("Name cannot be null.");
-        
+
         User rawData = await _userRepository.Add(user);
-        return UserProfileResultDto.MapFromUser(rawData);
+        return rawData;
     }
 
     public async Task DeleteUser(int userId)
@@ -75,7 +75,7 @@ public class UserService : IUserService
     {
         await _userRepository.DisposeAsync();
     }
-    
+
     private async Task<bool> UserAlreadyExists(User user)
     {
         try
