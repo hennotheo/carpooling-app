@@ -17,22 +17,15 @@ public class AuthController : ControllerBase
         _tokenService = tokenService;
     }
 
-    [Authorize]
-    [HttpGet("test")]
-    public IActionResult Index()
-    {
-        return Ok("AuthController is working");
-    }
-    
     [HttpPost("register")]
     public IActionResult Register([FromBody] UserRegisterRequestDto registerModel)
     {
         User user = registerModel.MapToUser();
-        
+
         string token = _tokenService.GenerateToken(user);
-        return Ok(new { Token = token });
+        return Ok(new UserRegisterResponseDto { Token = token, UserId = user.Id });
     }
-    
+
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginDto loginModel)
     {
