@@ -51,16 +51,6 @@ public class UserController : ControllerBase
         });
     }
 
-    [HttpPost(Name = "AddUser")]
-    public async Task<IActionResult> AddUser([FromBody] UserRegisterRequestDto user)
-    {
-        return await ExecuteServiceAction(async () =>
-        {
-            UserProfileResultDto createdUser = await _userService.AddUser(user);
-            return CreatedAtRoute("GetUserById", new { userId = createdUser.Id }, createdUser);
-        });
-    }
-
     private async Task<IActionResult> ExecuteServiceAction(Func<Task<IActionResult>>? action)
     {
         if (action == null)

@@ -24,6 +24,15 @@ public class AuthController : ControllerBase
         return Ok("AuthController is working");
     }
     
+    [HttpPost("register")]
+    public IActionResult Register([FromBody] UserRegisterRequestDto registerModel)
+    {
+        User user = registerModel.MapToUser();
+        
+        string token = _tokenService.GenerateToken(user);
+        return Ok(new { Token = token });
+    }
+    
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginDto loginModel)
     {
