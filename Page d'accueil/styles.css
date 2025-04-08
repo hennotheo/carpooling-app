@@ -1,0 +1,324 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+}
+/* Sticky footer setup */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+/* Style du header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 15px 30px;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Logo */
+.logo img {
+    height: 10%;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+/* Liste des liens */
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+    color: #d9534f;
+}
+
+/* Profil et boutons */
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.imgProf {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Boutons d'authentification */
+.auth-buttons {
+    display: flex;
+}
+
+.auth-buttons button {
+    border: none;
+    padding: 8px 15px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.sign-in {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.register {
+    background-color: black;
+    color: white;
+}
+
+.sign-in:hover {
+    background-color: #f0f0f0;
+}
+
+.register:hover {
+    background-color: #333;
+}
+/*************************************************************************/
+/* Search bar */
+.search-bar {
+    display: flex;
+    background-color: #fce4e4;
+    border-radius: 20px;
+    padding: 10px;
+    width: fit-content;
+    align-items: center;
+    margin: 100px auto;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    flex: 1;
+}
+
+.search-item i {
+    margin-right: 8px;
+    color: #4a4a4a;
+}
+
+.search-item input {
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 16px;
+    color: #4a4a4a;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    color: #4a4a4a;
+    font-size: 18px;
+}
+/* ---------------- HERO ---------------- */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    background: url('hero-image.jpg') no-repeat center center/cover;
+}
+
+.hero .search-buttons {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.hero .search-buttons button {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* ---------------- CONTENU PRINCIPAL ---------------- */
+.map-profiles-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 40px;
+    gap: 30px;
+  }
+  
+  .map-container {
+    width: 45%;
+    border: 5px solid #e0e0e0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+  
+  .map-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .profiles-container {
+    width: 55%;
+    background-color: #4a4a4a;
+    border: 2px solid #cc3366;
+    border-radius: 10px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .profile-card {
+    background-color: #2e2e2e;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+  }
+  
+  .profile-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+  }
+  
+  .profile-card p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }  
+
+/* ---------------- SECTION AVIS ---------------- */
+.reviews {
+    padding: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+.review-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.review {
+    border: 1px solid #cc0000;
+    padding: 20px;
+    width: 250px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.review .stars {
+    color: gold;
+}
+
+.review h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.reviewer {
+    font-size: 0.9rem;
+    color: gray;
+}
+
+/* ---------------- IMAGE VINTAGE ---------------- */
+.vintage-section {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.vintage-section img {
+    width: 90%;
+    border-radius: 5px;
+}
+
+/****************************************************************/
+/* Footer */
+footer {
+    background-color: white;
+    padding: 20px 30px;
+    border-top: 3px solid #b60027;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Texte du footer */
+.footer-left p {
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+}
+
+/* Icônes des réseaux sociaux */
+.footer-right a {
+    margin: 0 8px;
+    display: inline-block;
+}
+
+.footer-right img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.footer-right img:hover {
+    transform: scale(1.1);
+}
