@@ -52,7 +52,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost(Name = "AddUser")]
-    public async Task<IActionResult> AddUser([FromBody] UserSignUpRequestDto user)
+    public async Task<IActionResult> AddUser([FromBody] UserRegisterRequestDto user)
     {
         return await ExecuteServiceAction(async () =>
         {

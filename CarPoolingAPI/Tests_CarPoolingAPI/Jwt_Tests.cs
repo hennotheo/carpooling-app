@@ -1,11 +1,13 @@
 ﻿using System.Text;
+using CarPoolingAPI.DTO;
+using CarPoolingAPI.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 
 namespace Tests_CarPoolingAPI;
 
 [TestFixture(Category = "Authentication")]
-public class Jwt_Tests
+public class AuthenticationApiTests
 {
     private HttpClient _client;
 
@@ -23,12 +25,19 @@ public class Jwt_Tests
     }
 
     [Test]
-    public async Task GenerateJwtToken_ShouldReturnToken()
+    public async Task RegisterUser_Exist()
     {
-        var loginModel = new { Email = "testuser", Password = "password" };
-        var content = new StringContent(JsonConvert.SerializeObject(loginModel), Encoding.UTF8, "application/json");
-        
-        var response = await _client.PostAsync("/api/Auth/login", content);
+        var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
+        var response = await _client.PostAsync("/api/Auth/register", content);
+
+        Assert.That(response.IsSuccessStatusCode, Is.True);
+    }
+
+    [Test]
+    public async Task RegisterUser_ReturnToken()
+    {
+        var content = new StringContent(JsonConvert.SerializeObject(TestData.ValidRegisterRequest), Encoding.UTF8, "application/json");
+        var response = await _client.PostAsync("/api/Auth/register", content);
         response.EnsureSuccessStatusCode();
         var responseString = await response.Content.ReadAsStringAsync();
         

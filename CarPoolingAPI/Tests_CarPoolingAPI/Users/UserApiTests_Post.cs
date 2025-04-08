@@ -13,7 +13,7 @@ public class UserApiTests_Post : UserApiTests
     [Test]
     public async Task AddUser_Exist()
     {
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserSignUpRequestDto>())).ReturnsAsync(TestData.ValidUserProfileResultDto);
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserRegisterRequestDto>())).ReturnsAsync(TestData.ValidUserProfileResultDto);
 
         HttpResponseMessage response = await AddUserPost(TestData.ValidUser);
 
@@ -23,7 +23,7 @@ public class UserApiTests_Post : UserApiTests
     [Test]
     public async Task AddUser_ConflictIfUserAlreadyExists()
     {
-        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserSignUpRequestDto>())).ThrowsAsync(new AlreadyExistsServiceException(""));
+        _mockUserService.Setup(service => service.AddUser(It.IsAny<UserRegisterRequestDto>())).ThrowsAsync(new AlreadyExistsServiceException(""));
 
         HttpResponseMessage response = await AddUserPost(TestData.ValidUser);
 

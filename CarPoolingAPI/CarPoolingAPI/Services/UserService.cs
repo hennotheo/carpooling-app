@@ -40,7 +40,7 @@ public class UserService : IUserService
         return UserProfileResultDto.MapFromUser(rawData);
     }
 
-    public async Task<UserProfileResultDto> AddUser(UserSignUpRequestDto userDto)
+    public async Task<UserProfileResultDto> AddUser(UserRegisterRequestDto userDto)
     {
         User user = userDto.MapToUser();
         
