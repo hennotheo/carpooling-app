@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
+using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
 
 namespace CarPoolingAPI.Services;
@@ -31,9 +32,9 @@ public sealed class AuthenticationService : IAuthenticationService
             throw new BadRequestServiceException("Password Invalid");
 
         User user = registerModel.MapToUser();
-        await _userService.AddUser(user);
+        user = await _userService.AddUser(user);
         string token = _tokenService.GenerateToken(user);
-        
+
         return new UserAuthResponseDto()
         {
             Token = token,
@@ -41,9 +42,25 @@ public sealed class AuthenticationService : IAuthenticationService
         };
     }
 
-    public Task<UserAuthResponseDto> Login(UserLoginDto loginModel)
+    public async Task<UserAuthResponseDto> Login(UserLoginRequestDto loginRequestModel)
     {
-        throw new NotImplementedException();
+        User targetUser = await _userService.GetFirstByPredicate(user => user.Email == loginRequestModel.Email);
+        loginRequestModel.Password = HashPassword(loginRequestModel.Password);
+
+        if (loginRequestModel.Password != targetUser.HashedPassword)
+            throw new UnAuthorizedServiceException("Invalid Password");
+
+        return new UserAuthResponseDto()
+        {
+            Token = _tokenService.GenerateToken(targetUser),
+            UserId = targetUser.Id
+        };
+    }
+
+    private string HashPassword(string password)
+    {
+        // Implement your hashing logic here
+        return password; // Placeholder
     }
 
     private bool CheckNameString(string value)

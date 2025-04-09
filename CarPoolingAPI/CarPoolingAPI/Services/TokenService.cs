@@ -14,7 +14,7 @@ public sealed class TokenService : ITokenService
     {
         _configuration = configuration;
     }
-
+    
     public string GenerateToken(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

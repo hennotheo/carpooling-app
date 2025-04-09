@@ -30,21 +30,12 @@ public class AuthController : CarPoolingAPIController<AuthController>
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] UserLoginDto loginModel)
+    public async Task<IActionResult> Login([FromBody] UserLoginRequestDto loginRequestModel)
     {
-        return BadRequest("Not implemented");
-        User user = AuthenticateUser(loginModel);
-        if (user == null)
+        return await ExecuteServiceAction(async () =>
         {
-            return Unauthorized();
-        }
-
-        string token = _tokenService.GenerateToken(user);
-        return Ok(new { Token = token });
-    }
-
-    private User AuthenticateUser(UserLoginDto loginModel)
-    {
-        return new User { FirstName = "testuser", Email = "testuser@example.com" };
+            UserAuthResponseDto response = await _authenticationService.Login(loginRequestModel);
+            return Ok(response);
+        });
     }
 }

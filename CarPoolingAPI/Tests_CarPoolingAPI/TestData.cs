@@ -18,5 +18,5 @@ public static class TestData
     public static readonly UserProfileResultDto ValidUserProfileResultDto = new() { Id = 0, FirstName = "John", LastName = "K", Email = "john@jonmail.com" };
     public static readonly UserRegisterRequestDto ValidRegisterRequest = new() { FirstName = "John", LastName = "Doe", Email = "john.doe@test.com", Password = "PASSword123?" };
     public static readonly UserAuthResponseDto ValidAuthResponse = new() { Token = VALID_TOKEN, UserId = 0 };
-    public static readonly UserLoginDto ValidLoginDto = new() { Email = "john.doe@gmail.com", Password = "PASSword123?" };
+    public static readonly UserLoginRequestDto ValidLoginRequestDto = new() { Email = "john.doe@gmail.com", Password = "PASSword123?" };
 }

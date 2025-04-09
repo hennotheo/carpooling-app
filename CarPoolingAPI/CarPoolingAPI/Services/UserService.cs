@@ -39,6 +39,12 @@ public sealed class UserService : IUserService
 
         return UserProfileResultDto.MapFromUser(rawData);
     }
+    
+    public async Task<User> GetFirstByPredicate(Func<User, bool> predicate)
+    {
+        User rawData = await _userRepository.GetFirstByPredicate(predicate);
+        return rawData;
+    }
 
     public async Task<User> AddUser(User user)
     {
