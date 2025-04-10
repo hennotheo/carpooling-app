@@ -1,19 +1,50 @@
 ## CarPooling API Documentation
 
-Decris toutes les requetes possibles pour l'API
+Décris toutes les requêtes possibles pour l'API
 
-### Users [/User]
-#### Create a User [POST]
-**[POST]** `api/User`
-- Response 201 (application/json)
-- Body (WIP)
+### Authentication [/Auth]
+#### Register a new user [POST]
+**[POST]** `api/Auth/register`
+
+- Body
 ```json
 {
-  WIP
+  "firstName": "Name",
+  "lastName": "Name",
+  "email": "test@test.com",
+  "password": "Test123!"
+}
+```
+- Response 201 (application/json)
+```json
+{
+  "token": "TOKEN",
+  "userId": 0
 }
 ```
 
-#### Get a User [GET]
+#### Login to account [POST]
+**[POST]** `api/Auth/login`
+
+- Body
+```json
+{
+  "email": "ooddccj@go.com",
+  "password": "String123!"
+}
+```
+- Response 201 (application/json)
+```json
+{
+  "token": "TOKEN",
+  "userId": 0
+}
+```
+
+
+### Users [/User]
+
+#### Get a User profile [GET]
 **[GET]** `api/User/{id}`
 - Response 200 (application/json)
 ```json

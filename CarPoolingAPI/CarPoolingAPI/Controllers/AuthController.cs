@@ -25,7 +25,7 @@ public class AuthController : CarPoolingAPIController<AuthController>
         return await ExecuteServiceAction(async () =>
         {
             UserAuthResponseDto response = await _authenticationService.Register(registerModel);
-            return Ok(response);
+            return Created($"api/User/{response.UserId}", response); 
         });
     }
 
@@ -35,7 +35,7 @@ public class AuthController : CarPoolingAPIController<AuthController>
         return await ExecuteServiceAction(async () =>
         {
             UserAuthResponseDto response = await _authenticationService.Login(loginRequestModel);
-            return Ok(response);
+            return Accepted($"api/User/{response.UserId}", response);
         });
     }
 }

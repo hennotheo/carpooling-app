@@ -18,7 +18,7 @@ public class UserController : CarPoolingAPIController<UserController>
         _userService = userService;
     }
 
-    [HttpGet("Search", Name = "SearchUsers")]
+    [HttpGet("Search", Name = nameof(Search))]
     public async Task<IActionResult> Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
         ICollection<UserProfileResultDto> allUsers = await _userService.SearchUsers(max);
