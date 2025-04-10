@@ -16,8 +16,8 @@ public sealed class UserService : IUserService
     {
         public FakeRepo() : base()
         {
-            Entities.Add(new User { Id = 1, FirstName = "John" });
-            Entities.Add(new User { Id = 2, FirstName = "Jane" });
+            Entities.Add(new User { Id = 1, FirstName = "John", Email = "test@test.com", HashedPassword = "123"});
+            Entities.Add(new User { Id = 2, FirstName = "Jane", Email = "test@test.com", HashedPassword = "123"});
         }
     }
 
@@ -35,15 +35,28 @@ public sealed class UserService : IUserService
 
     public async Task<UserProfileResultDto> GetUserById(int userId)
     {
-        User rawData = await _userRepository.GetById(userId);
-
-        return UserProfileResultDto.MapFromUser(rawData);
+        try
+        {
+            User rawData = await _userRepository.GetById(userId);
+            return UserProfileResultDto.MapFromUser(rawData);
+        }
+        catch (RepoDataNotFoundException)
+        {
+            throw new NotFoundServiceException($"User with id {userId} not found.");
+        }
     }
-    
+
     public async Task<User> GetFirstByPredicate(Func<User, bool> predicate)
     {
-        User rawData = await _userRepository.GetFirstByPredicate(predicate);
-        return rawData;
+        try
+        {
+            User rawData = await _userRepository.GetFirstByPredicate(predicate);
+            return rawData;
+        }
+        catch (RepoDataNotFoundException)
+        {
+            throw new NotFoundServiceException($"User not found.");
+        }
     }
 
     public async Task<User> AddUser(User user)

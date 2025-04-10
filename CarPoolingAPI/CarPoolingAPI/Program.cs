@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text;
+using CarPoolingAPI.DTO;
 using CarPoolingAPI.Services;
 using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
@@ -65,7 +66,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IRepository<int, User>, UserService.FakeRepo>();
+builder.Services.AddSingleton<IRepository<int, User>, UserService.FakeRepo>();
 
 var app = builder.Build();
 

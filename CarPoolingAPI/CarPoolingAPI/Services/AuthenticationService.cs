@@ -1,8 +1,8 @@
-﻿using System.Text.RegularExpressions;
-using CarPoolingAPI.DTO;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 using CarPoolingAPI.Exceptions;
-using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
+using CarPoolingAPI.DTO;
 
 namespace CarPoolingAPI.Services;
 
@@ -31,6 +31,8 @@ public sealed class AuthenticationService : IAuthenticationService
         if (!CheckPasswordString(registerModel.Password))
             throw new BadRequestServiceException("Password Invalid");
 
+        registerModel.Password = HashPassword(registerModel.Password);
+        
         User user = registerModel.MapToUser();
         user = await _userService.AddUser(user);
         string token = _tokenService.GenerateToken(user);
@@ -48,7 +50,7 @@ public sealed class AuthenticationService : IAuthenticationService
         loginRequestModel.Password = HashPassword(loginRequestModel.Password);
 
         if (loginRequestModel.Password != targetUser.HashedPassword)
-            throw new UnAuthorizedServiceException("Invalid Password");
+            throw new UnAuthorizedServiceException($"Invalid Password");
 
         return new UserAuthResponseDto()
         {
@@ -59,8 +61,9 @@ public sealed class AuthenticationService : IAuthenticationService
 
     private string HashPassword(string password)
     {
-        // Implement your hashing logic here
-        return password; // Placeholder
+        using var sha256 = System.Security.Cryptography.SHA256.Create();
+        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+        return Convert.ToBase64String(hashedBytes);
     }
 
     private bool CheckNameString(string value)

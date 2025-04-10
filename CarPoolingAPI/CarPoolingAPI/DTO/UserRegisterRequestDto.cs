@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using CarPoolingAPICore.Models;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace CarPoolingAPI.DTO;
 
@@ -26,7 +28,8 @@ public struct UserRegisterRequestDto
         {
             FirstName = FirstName,
             LastName = LastName,
-            Email = Email
+            Email = Email,
+            HashedPassword = Password
         };
     }
 }
