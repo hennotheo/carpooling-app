@@ -3,25 +3,22 @@ using System.Runtime.InteropServices;
 using CarPoolingAPI.DTO;
 using CarPoolingAPI.Exceptions;
 using CarPoolingAPI.Services;
-using CarPoolingAPICore.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPoolingAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UserController : CarPoolingAPIController<UserController>
 {
-    private readonly ILogger<UserController> _logger;
     private readonly IUserService _userService;
 
-    public UserController(ILogger<UserController> logger, IUserService userService)
+    public UserController(ILogger<UserController> logger, IUserService userService) : base(logger)
     {
-        _logger = logger;
         _userService = userService;
     }
 
-    [HttpGet("Search", Name = "SearchUsers")]
+    [HttpGet("Search", Name = nameof(Search))]
     public async Task<IActionResult> Search([FromQuery, DefaultParameterValue(25), Optional, Range(1, 100)] int max)
     {
         ICollection<UserProfileResultDto> allUsers = await _userService.SearchUsers(max);
@@ -50,36 +47,5 @@ public class UserController : ControllerBase
             await _userService.DeleteUser(userId);
             return Ok("User deleted successfully");
         });
-    }
-
-    [HttpPost(Name = "AddUser")]
-    public async Task<IActionResult> AddUser([FromBody] UserSignUpRequestDto user)
-    {
-        return await ExecuteServiceAction(async () =>
-        {
-            UserProfileResultDto createdUser = await _userService.AddUser(user);
-            return CreatedAtRoute("GetUserById", new { userId = createdUser.Id }, createdUser);
-        });
-    }
-
-    private async Task<IActionResult> ExecuteServiceAction(Func<Task<IActionResult>>? action)
-    {
-        if (action == null)
-            return BadRequest("Action is null");
-
-        try
-        {
-            return await action();
-        }
-        catch (ServiceException e)
-        {
-            _logger.LogError(e.StackTrace);
-            return e.ErrorAction();
-        }
-        catch(Exception e)
-        {
-            _logger.LogError(e.StackTrace);
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
     }
 }
