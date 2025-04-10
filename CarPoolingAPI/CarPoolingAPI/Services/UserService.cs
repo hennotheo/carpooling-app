@@ -12,9 +12,9 @@ public sealed class UserService : IUserService
 {
     private IRepository<int, User> _userRepository;
 
-    public class FakeRepo : BaseRepository<int, User>
+    public class FakeRepo : Repository<int, User>
     {
-        public FakeRepo() : base()
+        public FakeRepo() : base(null)
         {
             Entities.Add(new User { Id = 1, FirstName = "John", Email = "test@test.com", HashedPassword = "123"});
             Entities.Add(new User { Id = 2, FirstName = "Jane", Email = "test@test.com", HashedPassword = "123"});

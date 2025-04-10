@@ -1,10 +1,11 @@
 using System.Runtime.CompilerServices;
 using System.Text;
-using CarPoolingAPI.DTO;
 using CarPoolingAPI.Services;
+using CarPoolingAPICore.Data;
 using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -61,6 +62,12 @@ builder.Services.AddSwaggerGen(c =>
             new string[] { }
         }
     });
+});
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseSqlServer(connectionString);
 });
 
 builder.Services.AddScoped<ITokenService, TokenService>();

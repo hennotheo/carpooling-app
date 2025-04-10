@@ -1,19 +1,21 @@
 ﻿using System.Reflection;
+using CarPoolingAPICore.Data;
 using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Extensions;
 using CarPoolingAPICore.Interface;
 
 namespace CarPoolingAPICore.Repository;
 
-public class BaseRepository<TId, T> : IRepository<TId, T>
+public class Repository<TId, T> : IRepository<TId, T>
 {
-    private List<T> _entities; //TODO: Change the variable
+    private ApplicationDbContext _context;
+    private IList<T> _entities;
 
     private readonly PropertyInfo _idProp;
 
     protected virtual IList<T> Entities => _entities;
 
-    public BaseRepository()
+    public Repository(ApplicationDbContext context)
     {
         _entities = new List<T>();
 

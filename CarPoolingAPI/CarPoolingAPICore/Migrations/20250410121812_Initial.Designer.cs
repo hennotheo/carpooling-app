@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarPoolingAPICore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250410104028_Initial")]
+    [Migration("20250410121812_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CarPoolingAPICore.Models;
 
@@ -14,6 +16,6 @@ public class User
     [Required, EmailAddress, MaxLength(100)]
     public string Email { get; set; }
 
-    [Required] 
+    [Required, JsonIgnore] 
     public string HashedPassword { get; set; }
 }
