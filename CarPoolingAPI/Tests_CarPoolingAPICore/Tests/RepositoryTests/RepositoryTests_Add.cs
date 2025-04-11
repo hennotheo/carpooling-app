@@ -1,30 +1,28 @@
-﻿using CarPoolingAPICore.Interface;
+﻿using CarPoolingAPICore.Models;
 using Tests_CarPoolingAPICore.Models;
 
 namespace Tests_CarPoolingAPICore;
 
 [TestFixture(Category = CarPoolingApiCoreTests.CATEGORY_POST)]
-public class RepositoryTests_Add
+public class RepositoryTests_Add : RepositoryTests
 {
     [Test]
-    public static void AddNoThrow()
+    public void AddNoThrow()
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>();
-        Assert.DoesNotThrowAsync(async () => { await userRepository.Add(new UserTestData()); });
+        Assert.DoesNotThrowAsync(async () => { await _repo.Add(CarPoolingApiCoreTests.ValidUser); });
     }
 
     [Test]
-    [TestCase(1, "Test")]
-    [TestCase(3, "Test2")]
-    public static void AddAndGetIt(int id, string name)
+    [TestCase("Test")]
+    [TestCase("Test2")]
+    public async Task AddAndGetIt(string name)
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>();
-        UserTestData user = new UserTestData()
-        {
-            Id = id, Name = name
-        };
-        userRepository.Add(user);
-
-        Assert.That(userRepository.GetById(id).GetAwaiter().GetResult().Name, Is.EqualTo(name));
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.FirstName = name;
+        await _repo.Add(user);
+        _repo.SaveChanges();
+        User? found = await _repo.GetFirstByPredicate(user => user.FirstName == name);
+        
+        Assert.That(found.FirstName, Is.EqualTo(name));
     }
 }

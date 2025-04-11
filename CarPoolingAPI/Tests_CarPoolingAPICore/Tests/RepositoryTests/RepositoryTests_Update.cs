@@ -1,41 +1,50 @@
 ﻿using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Interface;
+using CarPoolingAPICore.Models;
 using Tests_CarPoolingAPICore.Models;
 
 namespace Tests_CarPoolingAPICore;
 
 [TestFixture(Category = CarPoolingApiCoreTests.CATEGORY_UPDATE)]
-public class RepositoryTests_Update
+public class RepositoryTests_Update : RepositoryTests
 {
     [Test]
     public void UpdateNoThrow()
     {
-        UserTestData user = new UserTestData() { Id = 1, Name = "Test" };
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([user]);
-        user.Name = "Updated";
-        
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.Id = 0;
+        IRepository<int, User> userRepository = SetDataInRepo([user]);
+        user.FirstName = "Updated";
+
         Assert.DoesNotThrowAsync(async () => { await userRepository.Update(user); });
     }
-    
+
     [Test]
-    public void UpdateThrowWhenDontExist()
+    public async Task UpdateThrowWhenDontExist()
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>();
-        
-        UserTestData user = new UserTestData() { Id = 1, Name = "Test" };
-        Assert.ThrowsAsync<RepoDataNotFoundException>(async () => { await userRepository.Update(user); });
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.Id = 9999;
+
+        // user = await _repo.Update(user);
+        //
+        // Assert.That(user.Id, Is.EqualTo(999));
+        Assert.ThrowsAsync<RepoDataNotFoundException>(async () =>
+        {
+            await _repo.Update(user);
+            _repo.SaveChanges();
+        });
     }
-    
+
     [Test]
     public async Task UpdateSucceed()
     {
-        UserTestData user = new UserTestData() { Id = 1, Name = "Test" };
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([user]);
-        
-        user.Name = "Updated";
+        User user = CarPoolingApiCoreTests.ValidUser;
+        IRepository<int, User> userRepository = SetDataInRepo([user]);
+
+        user.FirstName = "Updated";
         await userRepository.Update(user);
-        
-        UserTestData updated = await userRepository.GetById(1);
-        Assert.That(updated.Name, Is.EqualTo("Updated"));
+
+        User updated = await userRepository.GetById(user.Id);
+        Assert.That(updated.FirstName, Is.EqualTo("Updated"));
     }
 }

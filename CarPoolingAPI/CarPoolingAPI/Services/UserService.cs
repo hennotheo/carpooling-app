@@ -12,15 +12,6 @@ public sealed class UserService : IUserService
 {
     private IRepository<int, User> _userRepository;
 
-    public class FakeRepo : BaseRepository<int, User>
-    {
-        public FakeRepo() : base()
-        {
-            Entities.Add(new User { Id = 1, FirstName = "John", Email = "test@test.com", HashedPassword = "123"});
-            Entities.Add(new User { Id = 2, FirstName = "Jane", Email = "test@test.com", HashedPassword = "123"});
-        }
-    }
-
     public UserService(IRepository<int, User> userRepository)
     {
         _userRepository = userRepository;
@@ -68,6 +59,7 @@ public sealed class UserService : IUserService
             throw new BadRequestServiceException("Name cannot be null.");
 
         User rawData = await _userRepository.Add(user);
+        _userRepository.SaveChanges();
         return rawData;
     }
 
@@ -76,6 +68,7 @@ public sealed class UserService : IUserService
         try
         {
             await _userRepository.DeleteById(userId);
+            _userRepository.SaveChanges();
         }
         catch (RepoDataNotFoundException)
         {

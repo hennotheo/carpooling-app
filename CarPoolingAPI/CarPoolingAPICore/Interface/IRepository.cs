@@ -11,4 +11,6 @@ public interface IRepository<in TId, T> : IDisposable, IAsyncDisposable
     Task<T> Update(T entity);
     
     Task DeleteById(TId id);
+
+    void SaveChanges();
 }

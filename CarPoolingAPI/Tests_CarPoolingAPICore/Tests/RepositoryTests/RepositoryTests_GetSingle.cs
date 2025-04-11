@@ -1,33 +1,37 @@
 ﻿using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Interface;
+using CarPoolingAPICore.Models;
 using Tests_CarPoolingAPICore.Models;
 
 namespace Tests_CarPoolingAPICore;
 
 [TestFixture(Category = CarPoolingApiCoreTests.CATEGORY_GET)]
-public class RepositoryTests_GetSingle
+public class RepositoryTests_GetSingle : RepositoryTests
 {
     [Test]
     [TestCase(1, false)]
     [TestCase(1, true)]
     [TestCase(2, true)]
     [TestCase(2, false)]
-    public static void GetByIdThrow(int id, bool mustThrow)
+    public void GetByIdThrow(int id, bool mustThrow)
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([new UserTestData { Id = mustThrow ? id + 1 : id, Name = "Test" }]);
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.Id =  mustThrow ? id + 1 : id;
+        
+        IRepository<int, User> userRepository = SetDataInRepo([user]);
 
         if (mustThrow)
         {
             Assert.ThrowsAsync<RepoDataNotFoundException>(async () =>
             {
-                var user = await userRepository.GetById(id);
+                var found = await userRepository.GetById(id);
             });
         }
         else
         {
             Assert.DoesNotThrowAsync(async () =>
             {
-                var user = await userRepository.GetById(id);
+                var found = await userRepository.GetById(id);
             });
         }
     }
@@ -35,14 +39,15 @@ public class RepositoryTests_GetSingle
     [Test]
     [TestCase(1)]
     [TestCase(2)]
-    public static void GetUsersByIdValid(int id)
+    public void GetUsersByIdValid(int id)
     {
-        UserTestData user = new UserTestData { Id = id, Name = "Test" };
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([user]);
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.Id = id;
+        IRepository<int, User> userRepository = SetDataInRepo([user]);
 
-        UserTestData get = userRepository.GetById(user.Id).GetAwaiter().GetResult();
+        User get = userRepository.GetById(user.Id).GetAwaiter().GetResult();
 
-        Assert.That(get.Name, Is.EqualTo(user.Name));
+        Assert.That(get.FirstName, Is.EqualTo(user.FirstName));
     }
     
     [Test]
@@ -50,22 +55,24 @@ public class RepositoryTests_GetSingle
     [TestCase("A", true)]
     [TestCase("B", false)]
     [TestCase("B", true)]
-    public static void GetByPredicateThrow(string name, bool mustThrow)
+    public void GetByPredicateThrow(string name, bool mustThrow)
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([new UserTestData { Id = 1, Name = mustThrow ? name + "dd" : name }]);
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.FirstName =  mustThrow ? name + "dd" : name;
+        IRepository<int, User> userRepository = SetDataInRepo([user]);
 
         if (mustThrow)
         {
             Assert.ThrowsAsync<RepoDataNotFoundException>(async () =>
             {
-                var user = await userRepository.GetFirstByPredicate(u => u.Name == name);
+                var user = await userRepository.GetFirstByPredicate(u => u.FirstName == name);
             });
         }
         else
         {
             Assert.DoesNotThrowAsync(async () =>
             {
-                var user = await userRepository.GetFirstByPredicate(u => u.Name == name);
+                var user = await userRepository.GetFirstByPredicate(u => u.FirstName == name);
             });
         }
     }
@@ -73,12 +80,13 @@ public class RepositoryTests_GetSingle
     [Test]
     [TestCase("A")]
     [TestCase("B")]
-    public static async Task GetByPredicateValid(string name)
+    public async Task GetByPredicateValid(string name)
     {
-        UserTestData user = new UserTestData { Id = 0, Name = name };
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([user]);
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.FirstName = name;
+        IRepository<int, User> userRepository = SetDataInRepo([user]);
 
-        UserTestData get = await userRepository.GetFirstByPredicate(u => u.Name == name);
+        User get = await userRepository.GetFirstByPredicate(u => u.FirstName == name);
 
         Assert.That(get.Id, Is.EqualTo(user.Id));
     }
