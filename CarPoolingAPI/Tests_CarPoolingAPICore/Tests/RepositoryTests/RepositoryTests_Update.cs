@@ -11,30 +11,40 @@ public class RepositoryTests_Update : RepositoryTests
     [Test]
     public void UpdateNoThrow()
     {
-        UserTestModel user = new UserTestModel() { Id = 1, FirstName = "Test" };
-        IRepository<int, UserTestModel> userRepository = SetDataInRepo([user]);
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.Id = 0;
+        IRepository<int, User> userRepository = SetDataInRepo([user]);
         user.FirstName = "Updated";
-        
+
         Assert.DoesNotThrowAsync(async () => { await userRepository.Update(user); });
     }
-    
+
     [Test]
-    public void UpdateThrowWhenDontExist()
+    public async Task UpdateThrowWhenDontExist()
     {
-        UserTestModel user = new UserTestModel() { Id = 1, FirstName = "Test" };
-        Assert.ThrowsAsync<RepoDataNotFoundException>(async () => { await _repo.Update(user); });
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.Id = 9999;
+
+        // user = await _repo.Update(user);
+        //
+        // Assert.That(user.Id, Is.EqualTo(999));
+        Assert.ThrowsAsync<RepoDataNotFoundException>(async () =>
+        {
+            await _repo.Update(user);
+            _repo.SaveChanges();
+        });
     }
-    
+
     [Test]
     public async Task UpdateSucceed()
     {
-        UserTestModel user = new UserTestModel() { Id = 1, FirstName = "Test" };
-        IRepository<int, UserTestModel> userRepository = SetDataInRepo([user]);
-        
+        User user = CarPoolingApiCoreTests.ValidUser;
+        IRepository<int, User> userRepository = SetDataInRepo([user]);
+
         user.FirstName = "Updated";
         await userRepository.Update(user);
-        
-        UserTestModel updated = await userRepository.GetById(1);
+
+        User updated = await userRepository.GetById(user.Id);
         Assert.That(updated.FirstName, Is.EqualTo("Updated"));
     }
 }

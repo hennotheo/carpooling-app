@@ -22,17 +22,14 @@ public class RepositoryTests_GetAll : RepositoryTests
     [TestCase(999)]
     public async Task GetAll_MaxCount(int max)
     {
-        List<UserTestModel> users = new List<UserTestModel>();
+        List<User> users = new List<User>();
         for (int i = 0; i < 50; i++)
         {
-            users.Add(new UserTestModel()
-            {
-                FirstName = "User" + i
-            });
+            users.Add(CarPoolingApiCoreTests.ValidUser);
         }
 
-        IRepository<int, UserTestModel> userRepository = SetDataInRepo(users.ToArray());
-        IEnumerable<UserTestModel> result = await userRepository.GetAll(max);
+        IRepository<int, User> userRepository = SetDataInRepo(users.ToArray());
+        IEnumerable<User> result = await userRepository.GetAll(max);
         Assert.That(result.Count, Is.LessThanOrEqualTo(max));
     }
 }

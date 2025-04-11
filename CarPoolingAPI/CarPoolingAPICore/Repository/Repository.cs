@@ -14,7 +14,7 @@ public class Repository<TId, T> : IRepository<TId, T> where T : class
 
     private readonly PropertyInfo _idProp;
 
-    public Repository(DbContext context)
+    public Repository(ApplicationDbContext context)
     {
         Type type = typeof(T);
         if (type.GetProperty("Id") == null)
@@ -23,7 +23,7 @@ public class Repository<TId, T> : IRepository<TId, T> where T : class
         // MemberInfo member = typeof(ApplicationDbContext)
         //     .GetMembers(BindingFlags.Public | BindingFlags.Instance)
         //     .First((member) => member.ReflectedType == typeof(DbSet<T>));
-        
+
         _entities = context.Set<T>();
         _context = context;
 
@@ -33,7 +33,6 @@ public class Repository<TId, T> : IRepository<TId, T> where T : class
     public async Task<IEnumerable<T>> GetAll(int maxCount = int.MaxValue)
     {
         return await Task.FromResult(_entities.Take(maxCount));
-
     }
 
     public async Task<T> GetById(TId id)
@@ -55,19 +54,24 @@ public class Repository<TId, T> : IRepository<TId, T> where T : class
     public async Task<T> Add(T entity)
     {
         _entities.Add(entity);
-        
-        _context.SaveChanges();
-        
+
         return await Task.FromResult(entity);
     }
 
     public async Task<T> Update(T entity)
     {
-        TId id = (TId)_idProp.GetValue(entity); //TODO Change when implementing EFCore
+        TId? id = (TId?)_idProp.GetValue(entity);
 
-        await DeleteById(id);
+        if (id == null)
+            throw new RepoDataNotFoundException();
 
-        return await Add(entity);
+        T? existingEntity = await GetById(id);
+
+        if (existingEntity == null)
+            throw new RepoDataNotFoundException();
+
+        await Task.Run(() => { _context.Entry(entity).State = EntityState.Modified; });
+        return entity;
     }
 
     public async Task DeleteById(TId id)
@@ -77,12 +81,16 @@ public class Repository<TId, T> : IRepository<TId, T> where T : class
             T entity = await GetById(id);
 
             _entities.Remove(entity);
-            _context.SaveChanges();
         }
         catch (Exception e)
         {
             throw new RepoDataNotFoundException();
         }
+    }
+
+    public void SaveChanges()
+    {
+        _context.SaveChanges();
     }
 
     public void Dispose()

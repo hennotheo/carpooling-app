@@ -11,12 +11,11 @@ public class CarPoolingApiCoreTests
     public const string CATEGORY_UPDATE = "Update";
     public const string CATEGORY_DELETE = "Delete";
 
-    public static readonly UserTestModel ValidUser = new UserTestModel()
+    public static readonly User ValidUser = new User()
     {
-        Id = 0,
         FirstName = "Test",
         LastName = "Test",
         Email = "test@test.com",
-        HashedPassword = "zojozdjodozokd^pd^p"
+        HashedPassword = "String123!"
     };
 }

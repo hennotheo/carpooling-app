@@ -9,20 +9,20 @@ public class RepositoryTests_Add : RepositoryTests
     [Test]
     public void AddNoThrow()
     {
-        Assert.DoesNotThrowAsync(async () => { await _repo.Add(new UserTestModel()); });
+        Assert.DoesNotThrowAsync(async () => { await _repo.Add(CarPoolingApiCoreTests.ValidUser); });
     }
 
     [Test]
-    [TestCase(1, "Test")]
-    [TestCase(3, "Test2")]
-    public void AddAndGetIt(int id, string name)
+    [TestCase("Test")]
+    [TestCase("Test2")]
+    public async Task AddAndGetIt(string name)
     {
-        UserTestModel user = new UserTestModel()
-        {
-            Id = id, FirstName = name
-        };
-        _repo.Add(user);
-
-        Assert.That(_repo.GetById(id).GetAwaiter().GetResult().FirstName, Is.EqualTo(name));
+        User user = CarPoolingApiCoreTests.ValidUser;
+        user.FirstName = name;
+        await _repo.Add(user);
+        _repo.SaveChanges();
+        User? found = await _repo.GetFirstByPredicate(user => user.FirstName == name);
+        
+        Assert.That(found.FirstName, Is.EqualTo(name));
     }
 }

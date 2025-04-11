@@ -5,6 +5,7 @@ using CarPoolingAPI.Swagger;
 using CarPoolingAPICore.Data;
 using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
+using CarPoolingAPICore.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -61,7 +62,7 @@ builder.Services.AddSwaggerGen(c =>
             new string[] { }
         }
     });
-    
+
     c.SchemaFilter<UserLoginDtoSchemaFilter>();
 });
 
@@ -78,10 +79,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     }
 });
 
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddSingleton<IRepository<int, User>, UserService.FakeRepo>();
 
 var app = builder.Build();
 
