@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using CarPoolingAPI.Services;
+using CarPoolingAPI.Swagger;
 using CarPoolingAPICore.Data;
 using CarPoolingAPICore.Interface;
 using CarPoolingAPICore.Models;
@@ -33,8 +34,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-// builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -62,12 +61,21 @@ builder.Services.AddSwaggerGen(c =>
             new string[] { }
         }
     });
+    
+    c.SchemaFilter<UserLoginDtoSchemaFilter>();
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    options.UseSqlServer(connectionString);
+    if (builder.Environment.IsDevelopment())
+    {
+        options.UseInMemoryDatabase("InMemoryDb");
+    }
+    else
+    {
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        options.UseSqlServer(connectionString);
+    }
 });
 
 builder.Services.AddScoped<ITokenService, TokenService>();

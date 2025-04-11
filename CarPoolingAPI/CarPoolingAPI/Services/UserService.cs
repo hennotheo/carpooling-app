@@ -16,8 +16,8 @@ public sealed class UserService : IUserService
     {
         public FakeRepo() : base(null)
         {
-            Entities.Add(new User { Id = 1, FirstName = "John", Email = "test@test.com", HashedPassword = "123"});
-            Entities.Add(new User { Id = 2, FirstName = "Jane", Email = "test@test.com", HashedPassword = "123"});
+            // Entities.Add(new User { Id = 1, FirstName = "John", Email = "test@test.com", HashedPassword = "123"});
+            // Entities.Add(new User { Id = 2, FirstName = "Jane", Email = "test@test.com", HashedPassword = "123"});
         }
     }
 

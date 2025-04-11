@@ -1,30 +1,28 @@
-﻿using CarPoolingAPICore.Interface;
+﻿using CarPoolingAPICore.Models;
 using Tests_CarPoolingAPICore.Models;
 
 namespace Tests_CarPoolingAPICore;
 
 [TestFixture(Category = CarPoolingApiCoreTests.CATEGORY_POST)]
-public class RepositoryTests_Add
+public class RepositoryTests_Add : RepositoryTests
 {
     [Test]
-    public static void AddNoThrow()
+    public void AddNoThrow()
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>();
-        Assert.DoesNotThrowAsync(async () => { await userRepository.Add(new UserTestData()); });
+        Assert.DoesNotThrowAsync(async () => { await _repo.Add(new UserTestModel()); });
     }
 
     [Test]
     [TestCase(1, "Test")]
     [TestCase(3, "Test2")]
-    public static void AddAndGetIt(int id, string name)
+    public void AddAndGetIt(int id, string name)
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>();
-        UserTestData user = new UserTestData()
+        UserTestModel user = new UserTestModel()
         {
-            Id = id, Name = name
+            Id = id, FirstName = name
         };
-        userRepository.Add(user);
+        _repo.Add(user);
 
-        Assert.That(userRepository.GetById(id).GetAwaiter().GetResult().Name, Is.EqualTo(name));
+        Assert.That(_repo.GetById(id).GetAwaiter().GetResult().FirstName, Is.EqualTo(name));
     }
 }

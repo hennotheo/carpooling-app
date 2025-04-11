@@ -1,28 +1,27 @@
 ﻿using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Interface;
+using CarPoolingAPICore.Models;
 using Tests_CarPoolingAPICore.Models;
 
 namespace Tests_CarPoolingAPICore;
 
 [TestFixture(Category = CarPoolingApiCoreTests.CATEGORY_DELETE)]
-public class RepositoryTests_Delete
+public class RepositoryTests_Delete : RepositoryTests
 {
     [Test]
-    [TestCase(1)]
-    [TestCase(2)]
-    public static void DeleteNoThrow(int id)
+    public void DeleteNoThrow()
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([new UserTestData { Id = id, Name = "Test" }]);
-
-        Assert.DoesNotThrowAsync(async () => { await userRepository.DeleteById(id); });
+        IRepository<int, UserTestModel> userRepository = SetDataInRepo([new UserTestModel { FirstName = "Test" }]);
+        
+        Assert.DoesNotThrowAsync(async () => { await userRepository.DeleteById(1); });
     }
 
     [Test]
     [TestCase(1)]
     [TestCase(2)]
-    public static void DeleteThrowWhenNotExist(int id)
+    public void DeleteThrowWhenNotExist(int id)
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([new UserTestData { Id = id, Name = "Test" }]);
+        IRepository<int, UserTestModel> userRepository = SetDataInRepo([new UserTestModel { Id = id, FirstName = "Test" }]);
 
         Assert.ThrowsAsync<RepoDataNotFoundException>(async () => { await userRepository.DeleteById(id + 1); }); //Add one to fail delete
     }
@@ -32,16 +31,15 @@ public class RepositoryTests_Delete
     [TestCase(2)]
     [TestCase(5)]
     [TestCase(98)]
-    public static async Task DeleteHasBeenDeleted(int id)
+    public async Task DeleteHasBeenDeleted(int id)
     {
-        UserTestData user = new UserTestData { Id = id, Name = "Test" };
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>([user]);
-
-        await userRepository.DeleteById(id);
+        SetDataInRepo([new UserTestModel(){ Id = id, FirstName = "Test" }]);
+        
+        await _repo.DeleteById(id);
 
         Assert.ThrowsAsync<RepoDataNotFoundException>(async () =>
         {
-            await userRepository.GetById(id);
+            await _repo.GetById(id);
         });
     }
 }

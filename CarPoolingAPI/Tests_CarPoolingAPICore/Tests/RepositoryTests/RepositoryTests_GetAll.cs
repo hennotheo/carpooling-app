@@ -1,39 +1,38 @@
 ﻿using CarPoolingAPICore.Interface;
+using CarPoolingAPICore.Models;
 using Tests_CarPoolingAPICore.Models;
 
 namespace Tests_CarPoolingAPICore;
 
 [TestFixture(Category = CarPoolingApiCoreTests.CATEGORY_GET)]
-public class RepositoryTests_GetAll
+public class RepositoryTests_GetAll : RepositoryTests
 {
-    [Test(TestOf = typeof(UserTestData))]
+    [Test]
     public void GetAllNoThrow()
     {
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>();
         Assert.DoesNotThrowAsync(async () =>
         {
-            var users = await userRepository.GetAll();
+            var users = await _repo.GetAll();
         });
     }
 
-    [Test(TestOf = typeof(UserTestData))]
+    [Test]
     [TestCase(2)]
     [TestCase(6)]
     [TestCase(999)]
     public async Task GetAll_MaxCount(int max)
     {
-        List<UserTestData> users = new List<UserTestData>();
+        List<UserTestModel> users = new List<UserTestModel>();
         for (int i = 0; i < 50; i++)
         {
-            users.Add(new UserTestData()
+            users.Add(new UserTestModel()
             {
-                Id = i,
-                Name = "User" + i
+                FirstName = "User" + i
             });
         }
 
-        IRepository<int, UserTestData> userRepository = new TestRepository<UserTestData>(users.ToArray());
-        ICollection<UserTestData> result = userRepository.GetAll(max).Result.ToList();
+        IRepository<int, UserTestModel> userRepository = SetDataInRepo(users.ToArray());
+        IEnumerable<UserTestModel> result = await userRepository.GetAll(max);
         Assert.That(result.Count, Is.LessThanOrEqualTo(max));
     }
 }

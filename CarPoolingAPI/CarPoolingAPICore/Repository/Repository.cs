@@ -3,28 +3,37 @@ using CarPoolingAPICore.Data;
 using CarPoolingAPICore.Exceptions;
 using CarPoolingAPICore.Extensions;
 using CarPoolingAPICore.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarPoolingAPICore.Repository;
 
-public class Repository<TId, T> : IRepository<TId, T>
+public class Repository<TId, T> : IRepository<TId, T> where T : class
 {
-    private ApplicationDbContext _context;
-    private IList<T> _entities;
+    private DbContext _context;
+    private DbSet<T> _entities;
 
     private readonly PropertyInfo _idProp;
 
-    protected virtual IList<T> Entities => _entities;
-
-    public Repository(ApplicationDbContext context)
+    public Repository(DbContext context)
     {
-        _entities = new List<T>();
+        Type type = typeof(T);
+        if (type.GetProperty("Id") == null)
+            throw new ArgumentException($"Type {type.Name} does not have an Id property.");
+
+        // MemberInfo member = typeof(ApplicationDbContext)
+        //     .GetMembers(BindingFlags.Public | BindingFlags.Instance)
+        //     .First((member) => member.ReflectedType == typeof(DbSet<T>));
+        
+        _entities = context.Set<T>();
+        _context = context;
 
         _idProp = typeof(T).GetProperty("Id")!;
     }
 
     public async Task<IEnumerable<T>> GetAll(int maxCount = int.MaxValue)
     {
-        return await Task.Run(() => Entities.Take(maxCount).ToList());
+        return await Task.FromResult(_entities.Take(maxCount));
+
     }
 
     public async Task<T> GetById(TId id)
@@ -34,7 +43,7 @@ public class Repository<TId, T> : IRepository<TId, T>
 
     public async Task<T> GetFirstByPredicate(Func<T, bool> predicate)
     {
-        T? value = await Task.Run(() => Entities
+        T? value = await Task.Run(() => _entities
             .FirstOrDefault(predicate));
 
         if (Equals(value, default(T)))
@@ -45,7 +54,9 @@ public class Repository<TId, T> : IRepository<TId, T>
 
     public async Task<T> Add(T entity)
     {
-        Entities.Add(entity);
+        _entities.Add(entity);
+        
+        _context.SaveChanges();
         
         return await Task.FromResult(entity);
     }
@@ -55,7 +66,7 @@ public class Repository<TId, T> : IRepository<TId, T>
         TId id = (TId)_idProp.GetValue(entity); //TODO Change when implementing EFCore
 
         await DeleteById(id);
-        
+
         return await Add(entity);
     }
 
@@ -65,7 +76,8 @@ public class Repository<TId, T> : IRepository<TId, T>
         {
             T entity = await GetById(id);
 
-            Entities.Remove(entity);
+            _entities.Remove(entity);
+            _context.SaveChanges();
         }
         catch (Exception e)
         {
