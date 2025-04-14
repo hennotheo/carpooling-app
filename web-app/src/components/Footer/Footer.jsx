@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 import fb from "../../assets/Images/Icones/facebook.png";
 import linkedin from "../../assets/Images/Icones/linkedin.png";
@@ -21,7 +22,7 @@ function Footer() {
         <div className={styles.footerLinks}>
           <div className={styles.footerColumn}>
             <h4>À propos</h4>
-            <a href="#">Qui sommes-nous</a>
+            <Link to="/We">Qui sommes-nous</Link>
             <a href="#">Contact</a>
             <a href="#">Carrières</a>
           </div>

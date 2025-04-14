@@ -7,9 +7,8 @@
   align-items: flex-start;
   gap: 20px;
   padding: 20px;
-  max-width: 1200px;
   margin: 0 auto;
-  background-image: url('../Images/BG/banner2cv.jpg');
+  background-image: url('../../../assets/Images/BG/bouchon50.jpg');
   background-position: left, right;
   background-size: 100% auto;
   background-repeat: no-repeat, no-repeat;

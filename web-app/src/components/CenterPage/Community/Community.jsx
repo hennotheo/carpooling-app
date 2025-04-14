@@ -1,12 +1,13 @@
 import styles from './Community.module.css';
+import { Link } from 'react-router-dom';
 
 function Community() {
   return (
     <div className={styles.centerpage}>
       {/* 🔧 Bannière de maintenance */}
       <div className={styles.maintenanceBanner}>
-        <p>🚧 Côte À Côte Communauté est en maintenance, mais notre forum est donc inaccessible.</p>
-        <a href="/" className={styles.btnRetour}>Retour à l'accueil</a>
+        <p>🚧 Côte À Côte Communauté est en maintenance, notre forum est donc inaccessible.</p>
+        <Link to="/Homepage" className={styles.btnRetour}>Retour à l'accueil</Link>
       </div>
 
       {/* 🧾 Forum */}

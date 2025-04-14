@@ -1,4 +1,5 @@
 import styles from './HomePage.module.css';
+import Etoile from '../../../assets/Images/Icones/etoile.png'; // Import de l'image d'étoile
 
 function HomePage() {
   return (
@@ -58,7 +59,7 @@ function HomePage() {
               {[...Array(5)].map((_, i) => (
                 <img
                   key={i}
-                  src="../Images/Icones/etoile.png"
+                  src={Etoile}
                   alt="Star"
                   className={styles.star}
                 />
@@ -81,7 +82,7 @@ function HomePage() {
                 {[...Array(5)].map((_, i) => (
                   <img
                     key={i}
-                    src="../Images/Icones/etoile.png"
+                    src={Etoile}
                     alt="Star"
                     className={styles.star}
                   />

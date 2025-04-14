@@ -1,7 +1,9 @@
 
 .mainContent {
   display: flex;
-  height: 943px;
+  height: 940px;
+  border-top: 3px solid #B60027;
+  border-bottom: 3px solid #B60027;
 }
 
 .map {
@@ -12,14 +14,11 @@
 .mapFrance {
   width: 100%;
   height: 100%;
-  border-radius: 20px;
 }
 
 .profilesSection {
   width: 50%;
   background-color: #444444;
-  border: 2px solid #B60027;
-  border-radius: 20px;
   position: relative;
 }
 

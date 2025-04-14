@@ -7,7 +7,7 @@
   padding: 30px;
   background-color: #fff;
   border-top: 3px solid #b60027;
-  background-image: url('web-app\src\assets\Images\BG\bouchon50.jpg'), url('../Images/BG/departFamille.jpg');
+  background-image: url('../../../assets/Images/BG/départEglise.jpg'), url('../../../assets/Images/BG/departFamille.jpg');
   background-position: left, right;
   background-size: 50% auto, 50% auto;
   background-repeat: no-repeat, no-repeat;

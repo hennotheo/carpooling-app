@@ -1,5 +1,5 @@
 import styles from './Search.module.css';
-import Fleche from '../assets/Images/Icones/Fleche.png';
+import Fleche from '../../../assets/Images/Icones/Fleche.png';
 
 function Search() {
   return (

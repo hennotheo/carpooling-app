@@ -12,6 +12,8 @@ function Header() {
       </div>
       <nav className={styles.nav}>
         <ul className={styles.navLinks}>
+          <li><Link to="/Homepage">Accueil</Link></li>
+          <li><Link to="/Searchpage">Recherche</Link></li>
           <li><Link to="/Publishpage">Publier</Link></li>
           <li><Link to="/Journeyspage">Mes trajets</Link></li>
           <li><Link to="/Communitypage">Communauté</Link></li>
@@ -20,7 +22,7 @@ function Header() {
         <div className={styles.userActions}>
           <div className={styles.userProfile}>
             <div className={styles.userMenu}>
-              <img src={userIcon} alt="User" className={styles.userIcon} />
+            <Link to="/Profilepage"><img src={userIcon} alt="User" className={styles.userIcon}/></Link> 
               <img src={dropdownIcon} alt="Menu" className={styles.dropdownIcon} />
             </div>
             <div className={styles.authButtons}>

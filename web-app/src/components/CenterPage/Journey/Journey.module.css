@@ -5,14 +5,15 @@
   gap: 20px;
   padding: 20px;
   margin: 0 auto;
-  background-image: url('../Images/BG/départEglise.jpg'), url('../Images/BG/départTriste.jpg');
+  border-top: 3px solid #b60027;
+  background-image: url('../../../assets/Images/BG/départEglise.jpg'), url('../../../assets/Images/BG/départTriste.jpg');
   background-position: left, right;
   background-size: 50% auto, 50% auto;
   background-repeat: no-repeat, no-repeat;
 }
 
 .results {
-  max-height: 900px;
+  max-height: 850px;
   overflow-y: auto;
   background-color: #3f3f3f;
   border-radius: 10px;
