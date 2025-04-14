@@ -1,14 +1,14 @@
-import Header from '../components/Header';
-import SearchBar from '../components/SearchBar';
-import CenterPageJourney from '../components/CenterPageJourney';
-import Footer from '../components/Footer';
+import Header from '../components/Header/Header';
+import SearchBar from '../components/SeachBar/SearchBar';
+import CenterPage from '../components/CenterPage/CenterPage';
+import Footer from '../components/Footer/Footer';
 
 function Home() {
   return (
     <div className="page-wrapper">
       <Header />
       <SearchBar />
-      <CenterPageJourney />
+      <CenterPage />
       <Footer />
     </div>
   );

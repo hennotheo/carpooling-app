@@ -1,0 +1,88 @@
+.centerpage {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto;
+    flex-direction: column;
+    background-image: url('../Images/BG/départEglise.jpg'), url('../Images/BG/départTriste.jpg');
+    background-position: left, right;
+    background-size: 50% auto, 50% auto;
+  }
+  
+  .helpSection {
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    height: 100%;
+    padding: 10px;
+    width: 50%;
+    margin: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contactForm {
+    background-color: rgba(255, 255, 255, 0.85);
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .contactForm h1 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .contactForm label {
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #222;
+  }
+  
+  .contactForm input,
+  .contactForm textarea {
+    width: 95%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #fdfdfd;
+    transition: border 0.3s ease;
+  }
+  
+  .contactForm input:focus,
+  .contactForm textarea:focus {
+    border: 1px solid #b60027;
+    outline: none;
+  }
+  
+  .contactForm textarea {
+    resize: vertical;
+    min-height: 150px;
+  }
+  
+  .contactForm button {
+    margin-top: 25px;
+    background-color: #b60027;
+    color: #fff;
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: block;
+    width: 100%;
+  }
+  
+  .contactForm button:hover {
+    background-color: #900020;
+  }
+  
