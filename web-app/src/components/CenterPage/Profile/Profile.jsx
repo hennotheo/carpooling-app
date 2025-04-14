@@ -1,4 +1,6 @@
 import React from 'react';
+import chatBulle from '../../../assets/Images/Icones/chat-a-bulles.png'; // Import de l'icône de chat
+import banner from '../../../assets/Images/Icones/Banniere.jpg'; // Import de l'image de couverture
 import styles from './Profile.module.css'; // Import du CSS Module
 
 function Profile() {
@@ -8,7 +10,7 @@ function Profile() {
       <div className={styles.profileHeader}>
         <div className={styles.profileCover}>
           <img 
-            src="../Images/Icones/banniere.jpg" 
+            src={banner}
             alt="Cover photo" 
             className={styles.coverPhoto} 
           />
@@ -53,7 +55,7 @@ function Profile() {
           <div className={styles.profilePreferences}>
             <div className={styles.preferenceItem}>
               <img 
-                src="../Images/Icones/chat-a-bulles.png" 
+                src={chatBulle} 
                 alt="blabla" 
                 className={styles.iconPreference} 
               />

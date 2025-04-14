@@ -1,6 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .footer {
   background-color: var(--background-white);
   border-top: 3px solid #B60027;
+  padding: 2rem 0;
 }
 
 .footerContent {
