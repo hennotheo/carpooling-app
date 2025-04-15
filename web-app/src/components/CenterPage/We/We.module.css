@@ -1,0 +1,66 @@
+/* Community.module.css */
+
+/* Center page */
+.centerpage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 900px;
+    gap: 40px;
+    background-color: #fcecec;
+    padding: 50px 20px;
+    border-top: 3px solid #b60027;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap; /* Pour adaptabilité mobile */
+}
+
+/* Logo à gauche, plus grand */
+.logoM2I {
+    width: 20%;
+    height: auto;
+    flex-shrink: 0;
+}
+
+/* Bloc liste créateurs à droite */
+.listCreateur {
+    list-style: none;
+    padding: 30px;
+    margin: 0;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+.nomCreateur {
+    margin-bottom: 18px;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.nomCreateur .nom {
+    font-weight: normal;
+    color: #5e3b76; /* Violet doux */
+}
+
+.nomCreateur:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .centerpage {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logoM2I {
+        margin-bottom: 20px;
+    }
+
+    .listCreateur {
+        padding: 20px;
+    }
+}

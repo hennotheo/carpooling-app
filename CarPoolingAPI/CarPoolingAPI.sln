@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPoolingAPICore", "CarPoolingAPICore\CarPoolingAPICore.csproj", "{0FA35BF6-F7DB-49FB-B871-31B1D156273B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests_CarPoolingAPICore", "Tests_CarPoolingAPICore\Tests_CarPoolingAPICore.csproj", "{9B08BC48-9CB7-4E46-A279-822D6745C4BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPoolingAPI", "CarPoolingAPI\CarPoolingAPI.csproj", "{A1737798-9615-4114-8077-AA653CFBE986}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests_CarPoolingAPI", "Tests_CarPoolingAPI\Tests_CarPoolingAPI.csproj", "{6F919B95-6E66-4496-B9CB-A7A431882295}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,17 @@ Global
 		{0FA35BF6-F7DB-49FB-B871-31B1D156273B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FA35BF6-F7DB-49FB-B871-31B1D156273B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FA35BF6-F7DB-49FB-B871-31B1D156273B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B08BC48-9CB7-4E46-A279-822D6745C4BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B08BC48-9CB7-4E46-A279-822D6745C4BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B08BC48-9CB7-4E46-A279-822D6745C4BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B08BC48-9CB7-4E46-A279-822D6745C4BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1737798-9615-4114-8077-AA653CFBE986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1737798-9615-4114-8077-AA653CFBE986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1737798-9615-4114-8077-AA653CFBE986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1737798-9615-4114-8077-AA653CFBE986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F919B95-6E66-4496-B9CB-A7A431882295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F919B95-6E66-4496-B9CB-A7A431882295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F919B95-6E66-4496-B9CB-A7A431882295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F919B95-6E66-4496-B9CB-A7A431882295}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

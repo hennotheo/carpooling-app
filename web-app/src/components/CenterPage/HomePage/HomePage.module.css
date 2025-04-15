@@ -1,0 +1,138 @@
+
+.mainContent {
+  display: flex;
+  height: 940px;
+  border-top: 3px solid #B60027;
+  border-bottom: 3px solid #B60027;
+}
+
+.map {
+  width: 50%;
+  height: 100%;
+}
+
+.mapFrance {
+  width: 100%;
+  height: 100%;
+}
+
+.profilesSection {
+  width: 50%;
+  background-color: #444444;
+  position: relative;
+}
+
+.profilesContainer {
+  display: flex;
+  height: 100%;
+  padding: 2rem;
+}
+
+.testimonialGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.testimonialCard {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 28px;
+  color: white;
+}
+
+.testimonialCard h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.profilesScrollbar {
+  width: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin: 2rem 1rem;
+}
+
+.scrollbarThumb {
+  width: 100%;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reviews {
+  padding: 4rem 2rem;
+}
+
+.reviews h2 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.reviewsGrid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.reviewCard {
+  flex: 0 1 350px;
+  border: 1px solid #b50027;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.star {
+  width: 24px;
+  height: 24px;
+}
+
+.reviewer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.reviewerAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-image: url('/shape-2.png');
+  background-size: cover;
+}
+
+.reviewerInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewerName {
+  color: #757575;
+  font-weight: 600;
+}
+
+.reviewerDate {
+  color: #b3b3b3;
+}
+
+.gallery {
+  display: flex;
+  height: 559px;
+}
+
+.gallery img {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
