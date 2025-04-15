@@ -1,0 +1,37 @@
+.centerpage {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  margin: 0 auto;
+  border-top: 3px solid #b60027;
+  background-image: url('../../../assets/Images/BG/départEglise.jpg'), url('../../../assets/Images/BG/départTriste.jpg');
+  background-position: left, right;
+  background-size: 50% auto, 50% auto;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.results {
+  max-height: 850px;
+  overflow-y: auto;
+  background-color: #3f3f3f;
+  border-radius: 10px;
+  padding: 10px;
+  width: 50%;
+  margin: auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.results::-webkit-scrollbar {
+  width: 8px;
+}
+
+.results::-webkit-scrollbar-thumb {
+  background: #ffaaaa;
+  border-radius: 4px;
+}
+
+.results::-webkit-scrollbar-track {
+  background: #3f3f3f;
+}
